@@ -1,0 +1,33 @@
+#VRML_SIM R2020b utf8
+
+PROTO MCUMotor [
+  field SFString name "motor"
+  field SFFloat gearRatio 10.0
+  field SFNode tyre NULL
+]
+{
+  Slot {
+    type "motor-"
+    endPoint HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 0 1
+        springConstant 0.001
+        dampingConstant 0.001
+        suspensionAxis 0 1 0
+      }
+      device [
+        RotationalMotor {
+          name %{='"' .. fields.name.value .. '_motor"'}%
+          maxVelocity 1000
+        }
+        PositionSensor {
+          name %{='"' .. fields.name.value .. '_encoder"'}%
+        }
+      ]
+      endPoint Slot {
+        type "tyre+"
+        endPoint IS tyre
+      }
+    }
+  }
+}

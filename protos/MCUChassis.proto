@@ -1,0 +1,223 @@
+#VRML_SIM R2020b utf8
+
+PROTO MCUChassis [
+  field SFColor backColor 0.12549 0.290196 0.529412
+  field SFColor frontColor 0.12549 0.290196 0.529412
+  field SFFloat track 0.12
+  field SFFloat wheelBase 0.15
+  field SFFloat sensorBase 0.10
+  field SFNode backRightMotor NULL
+  field SFNode backLeftMotor NULL
+  field SFNode frontRightMotor NULL
+  field SFNode frontLeftMotor NULL
+  field SFNode sensor NULL
+]
+{
+  Robot {
+    translation 0 0.1 0
+    children [
+      Transform {
+        translation -0.01 0 0.00
+        children [
+          Solid {
+            children [
+              DEF BODY Shape {
+                appearance PBRAppearance {
+                  baseColor IS backColor
+                }
+                geometry Box {
+                  size %{=fields.wheelBase.value*0.67}% 0.02 %{=fields.track.value-0.05}%
+                }
+              }
+              Transform {
+                translation %{=fields.wheelBase.value*0.33}% 0 0
+                children [
+                  Solid {
+                    children [
+                      DEF ROD_CENTER Shape {
+                        appearance PBRAppearance {
+                          baseColor 0 0 0
+                        }
+                        geometry Box {
+                          size %{=fields.wheelBase.value}% 0.015 0.015
+                        }
+                      }
+                    ]
+                    name "rod_center"
+                    boundingObject USE ROD_CENTER
+                    physics Physics {
+                      density 1000
+                    }
+                  }
+                ]
+              }
+            ]
+            boundingObject USE BODY
+            physics Physics {
+              density 3000
+            }
+          }
+        ]
+      }
+      Transform {
+        translation %{=-fields.wheelBase.value*0.33}% 0 %{=fields.track.value*0.5}%
+        children [
+          Slot {
+            type "motor+"
+            endPoint IS backRightMotor
+          }
+        ]
+      }
+      Transform {
+        translation %{=-fields.wheelBase.value*0.33}% 0 %{=-fields.track.value*0.5}%
+        children [
+          Slot {
+            type "motor+"
+            endPoint IS backLeftMotor
+          }
+        ]
+      }
+      HingeJoint {
+        jointParameters HingeJointParameters {
+          axis 0 1 0
+          anchor %{=fields.wheelBase.value*0.67}% 0 0
+          minStop -1.5708
+          maxStop 1.5708
+          dampingConstant 0.1
+          suspensionAxis 0 1 0
+        }
+        device [
+          RotationalMotor {
+            name "center_motor"
+            minPosition -1.0472
+            maxPosition 1.0472
+            maxTorque 0.6
+          }
+        ]
+        endPoint Solid {
+          translation %{=fields.wheelBase.value*0.67}% 0 0
+          rotation 0 0 1 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor IS frontColor
+              }
+              geometry DEF FRONT Box {
+                size 0.04 0.02 %{=fields.track.value-0.05}%
+              }
+            }
+            Transform {
+              translation 0 0 %{=fields.track.value*0.5}%
+              children [
+                Slot {
+                  type "motor+"
+                  endPoint IS frontRightMotor
+                }
+              ]
+            }
+            Transform {
+              translation 0 0 %{=-fields.track.value*0.5}%
+              children [
+                Slot {
+                  type "motor+"
+                  endPoint IS frontLeftMotor
+                }
+              ]
+            }
+            HingeJoint {
+              jointParameters HingeJointParameters {
+                axis 0 0 1
+                anchor 0.02 0 0
+                minStop -0.1
+                maxStop 0.1
+                dampingConstant 0.01
+              }
+              endPoint Solid {
+                rotation 0 0 1 0
+                children [
+                  Transform {
+                    translation %{=fields.sensorBase.value/2}% 0 0.02
+                    children [
+                      Solid {
+                        children [
+                          DEF ROD Shape {
+                            appearance PBRAppearance {
+                              baseColor 0 0 0
+                            }
+                            geometry Box {
+                              size %{=fields.sensorBase.value}% 0.01 0.01
+                            }
+                          }
+                        ]
+                        name "rod_right"
+                        boundingObject USE ROD
+                        physics Physics {
+                          density 1000
+                        }
+                      }
+                    ]
+                  }
+                  Transform {
+                    translation %{=fields.sensorBase.value/2}% 0 -0.02
+                    children [
+                      Solid {
+                        children [
+                          Shape {
+                            appearance PBRAppearance {
+                              baseColor 0 0 0
+                            }
+                            geometry Box {
+                              size %{=fields.sensorBase.value}% 0.01 0.01
+                            }
+                          }
+                        ]
+                        name "rod_left"
+                        boundingObject USE ROD
+                        physics Physics {
+                          density 1000
+                        }
+                      }
+                    ]
+                  }
+                  HingeJoint {
+                    jointParameters HingeJointParameters {
+                      axis 0 0 1
+                      anchor %{=fields.sensorBase.value}% 0 0
+                      minStop -0.1
+                      maxStop 0.1
+                      dampingConstant 0.01
+                    }
+                    endPoint Slot {
+                      type "sensor+"
+                      endPoint IS sensor
+                    }
+                  }
+                ]
+                name "sensor"
+                boundingObject USE FRONT
+                physics Physics {
+                  density 100
+                }
+              }
+            }
+          ]
+          name "front"
+          boundingObject USE FRONT
+          physics Physics {
+            density 2000
+          }
+        }
+      }
+    ]
+    boundingObject Transform {
+      translation -0.01 0 0.00
+      children [
+        USE BODY
+      ]
+    }
+    physics Physics {
+    }
+    supervisor TRUE
+    controller "renesas_controller"
+  }
+}

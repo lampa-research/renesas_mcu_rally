@@ -1,0 +1,92 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  basicTimeStep 5
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+  coordinateSystem "NUE"
+  contactProperties [
+    ContactProperties {
+    }
+    ContactProperties {
+      material2 "nofriction"
+      coulombFriction [
+        0
+      ]
+    }
+    ContactProperties {
+      material2 "soft"
+      coulombFriction [
+        0.4291965365409851
+      ]
+    }
+    ContactProperties {
+      material2 "medium"
+      coulombFriction [
+        0.3375154435634613
+      ]
+    }
+    ContactProperties {
+      material2 "hard"
+      coulombFriction [
+        0.24584054946899414
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.5722302437838243 0.7907030945946267 0.21758024794908645 5.233365579116947
+  position -1.8282337637089916 1.897855476612408 1.538199530474734
+  followType "Mounted Shot"
+}
+Floor {
+  size 20 20
+  appearance Parquetry {
+    type "light strip"
+  }
+}
+TexturedBackground {
+  texture "stadium"
+  luminosity 0.3
+}
+TexturedBackgroundLight {
+}
+MCUChassis {
+  backColor 0.45098 0.823529 0.0862745
+  frontColor 0.988235 0.913725 0.309804
+  backRightMotor MCUMotor {
+    name "back_right"
+    tyre MCUTyre {
+      name "t0"
+    }
+  }
+  backLeftMotor MCUMotor {
+    name "back_left"
+    tyre MCUTyre {
+      name "t1"
+    }
+  }
+  frontRightMotor MCUMotor {
+    name "front_right"
+    tyre MCUTyre {
+      name "t2"
+    }
+  }
+  frontLeftMotor MCUMotor {
+    name "front_left"
+    tyre MCUTyre {
+      name "t4"
+    }
+  }
+  sensor MCUSensor {
+    color 0.937255 0.160784 0.160784
+    numberOfSensors 8
+    distanceBetweenSensors 0.015
+  }
+}
+MCUTimingGate {
+  translation 0.4 0 0
+}
+MCUTrackSuzuka {
+}

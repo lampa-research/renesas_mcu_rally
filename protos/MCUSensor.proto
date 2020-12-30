@@ -1,0 +1,61 @@
+#VRML_SIM R2020b utf8
+
+PROTO MCUSensor [
+  field SFColor color 0.12549 0.290196 0.529412
+  field SFInt32 numberOfSensors 4
+  field SFFloat distanceBetweenSensors 0.02
+]
+{
+  Slot {
+    type "sensor-"
+    endPoint Solid {
+      translation 0.1 0 0
+      rotation 0 0 1 0
+      children [
+        DEF SENSOR Shape {
+          appearance PBRAppearance {
+            baseColor IS color
+          }
+          geometry Box {
+            size 0.02 0.02 %{=fields.numberOfSensors.value * fields.distanceBetweenSensors.value + 0.02}%
+          }
+        }
+        %{
+          for i = 0, (fields.numberOfSensors.value - 1) do
+            local name = 'sensor_' .. i
+            local position = - fields.numberOfSensors.value / 2 * fields.distanceBetweenSensors.value + fields.distanceBetweenSensors.value * i
+            if (fields.numberOfSensors.value % 2 == 0) then
+              position = position + fields.distanceBetweenSensors.value / 2.0
+            end
+        }%
+            DistanceSensor {
+              translation 0.02 0 %{=position}%
+              rotation 0 0 1 -1.5708
+              name "%{=name}%"
+              type "infra-red"
+              numberOfRays 10
+              gaussianWidth 0.1
+            }
+            Transform {
+              translation 0.02 0 %{=position}%
+              children [
+                Shape {
+                  appearance PBRAppearance {
+                    baseColor 0 0 0
+                  }
+                  geometry Box {
+                    size 0.005 0.005 0.005
+                  }
+                } 
+              ]
+            }
+        %{ end }%
+      ]
+      contactMaterial "nofriction"
+      boundingObject USE SENSOR
+      physics Physics {
+        density 5000
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+# all files without extension or starting with a dot
+*
+!/**/
+!*.*
+.*
+# except gitignore and Makefile
+!/.gitignore
+!Makefile
+
+# 3D temp files
+*.FCStd
+*.FCStd1
+*.step
+
+# build folders
+*build/

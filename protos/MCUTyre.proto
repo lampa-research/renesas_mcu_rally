@@ -1,0 +1,36 @@
+#VRML_SIM R2020b utf8
+
+PROTO MCUTyre [
+  field SFString name "tyre"
+  field SFString{"soft", "medium", "hard"} material "medium"
+  field SFFloat width 0.02
+  field SFFloat radius 0.02
+]
+{
+  Slot {
+    type "tyre-"
+    endPoint Solid {
+      translation 0 0 0
+      rotation 1 0 0 1.5708
+
+      children [
+        DEF WHEEL_SHAPE Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+          }
+          geometry Cylinder {
+            height IS width
+            radius IS radius
+            subdivision 64
+          }
+        }
+      ]
+      name IS name
+      contactMaterial IS material
+      boundingObject USE WHEEL_SHAPE
+      physics Physics {
+      }
+    }
+  }
+}

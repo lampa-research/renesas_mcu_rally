@@ -1,1 +1,1 @@
-# renesas_mcu_rally
+# Virtual Renesas MCU Rally platform
