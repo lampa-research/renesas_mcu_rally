@@ -18,26 +18,26 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.4291965365409851
+        0.4213952422142029
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.3375154435634613
+        0.33283373713493347
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.24584054946899414
+        0.24428075551986694
       ]
     }
   ]
 }
 Viewpoint {
   orientation 0.5722302437838243 0.7907030945946267 0.21758024794908645 5.233365579116947
-  position -1.8282337637089916 1.897855476612408 1.538199530474734
+  position -3.9619198540933294 3.8927532711258577 3.3235156016162577
   followType "Mounted Shot"
 }
 Floor {
@@ -88,5 +88,5 @@ MCUChassis {
 MCUTimingGate {
   translation 0.4 0 0
 }
-MCUTrackSuzuka {
+MCUTrackTest {
 }

@@ -7,10 +7,11 @@
 !/.gitignore
 !Makefile
 
-# 3D temp files
+# 2D/3D temp files
 *.FCStd
 *.FCStd1
 *.step
+*.dxf
 
 # build folders
 *build/
