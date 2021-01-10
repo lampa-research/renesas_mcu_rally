@@ -1,6 +1,7 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
-  basicTimeStep 5
+  basicTimeStep 8
+  optimalThreadCount 12
   defaultDamping Damping {
     linear 0.5
     angular 0.5
@@ -18,27 +19,27 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.4213952422142029
+        0.39784133434295654
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.33283373713493347
+        0.31869858503341675
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.24428075551986694
+        0.23957137763500214
       ]
     }
   ]
 }
 Viewpoint {
-  orientation 0.5722302437838243 0.7907030945946267 0.21758024794908645 5.233365579116947
-  position -3.9619198540933294 3.8927532711258577 3.3235156016162577
-  followType "Mounted Shot"
+  orientation 0.7126574495103135 0.6401101537014456 0.2870162901052245 5.160854300291113
+  position -1.6316192385985795 2.494437651178722 1.9743353405384327
+  followType "None"
 }
 Floor {
   size 20 20
@@ -52,41 +53,13 @@ TexturedBackground {
 }
 TexturedBackgroundLight {
 }
-MCUChassis {
-  backColor 0.45098 0.823529 0.0862745
-  frontColor 0.988235 0.913725 0.309804
-  backRightMotor MCUMotor {
-    name "back_right"
-    tyre MCUTyre {
-      name "t0"
-    }
-  }
-  backLeftMotor MCUMotor {
-    name "back_left"
-    tyre MCUTyre {
-      name "t1"
-    }
-  }
-  frontRightMotor MCUMotor {
-    name "front_right"
-    tyre MCUTyre {
-      name "t2"
-    }
-  }
-  frontLeftMotor MCUMotor {
-    name "front_left"
-    tyre MCUTyre {
-      name "t4"
-    }
-  }
-  sensor MCUSensor {
-    color 0.937255 0.160784 0.160784
-    numberOfSensors 8
-    distanceBetweenSensors 0.015
-  }
-}
 MCUTimingGate {
   translation 0.4 0 0
 }
-MCUTrackTest {
+MCUTrackOval {
+}
+MCUCar {
+  backColor 1 1 1
+  frontColor 1 1 1
+  sensorColor 1 1 1
 }
