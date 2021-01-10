@@ -1,4 +1,4 @@
-#VRML_SIM R2020b utf8
+#VRML_SIM R2021a utf8
 
 PROTO MCUTyre [
   field SFString name "tyre"
@@ -30,6 +30,7 @@ PROTO MCUTyre [
       contactMaterial IS material
       boundingObject USE WHEEL_SHAPE
       physics Physics {
+        density 5000
       }
     }
   }

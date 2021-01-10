@@ -13,7 +13,7 @@
 #include "renesas_controller.h"
 
 // defines and macros
-#define TIME_STEP 10
+#define TIME_STEP 8
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
 // function prototypes
