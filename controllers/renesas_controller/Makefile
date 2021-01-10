@@ -65,7 +65,7 @@
 ###
 ###-----------------------------------------------------------------------------
 
-C_SOURCES = renesas_controller.c renesas.c
+C_SOURCES = renesas_controller.c renesas_api.c renesas_api_webots.c
 INCLUDE = -I"include"
 
 ### Do not modify: this includes Webots global Makefile.include

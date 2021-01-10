@@ -1,4 +1,4 @@
-#include "renesas.h"
+#include "renesas_api.h"
 
 /* Masked value settings X:masked (disabled) O:not masked (enabled) */
 #define MASK2_2 0x66 /* X O O X  X O O X            */
@@ -435,7 +435,7 @@ int main(int argc, char **argv)
     }
     line = weighted_sum / sum - 3.5;
 
-    motor2(60, 60, 60, 60);
+    motor_all(60, 60, 60, 60);
     handle(300 * line);
   };
 

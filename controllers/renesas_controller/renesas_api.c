@@ -1,4 +1,4 @@
-#include "renesas.h"
+#include "renesas_api.h"
 #include "math.h"
 #include "string.h"
 
@@ -40,7 +40,7 @@ void handle(int angle)
 
 void motor(int left, int right)
 {
-  motor2(right, left, right, left);
+  motor_all(right, left, right, left);
 }
 
 /**
@@ -52,7 +52,7 @@ void motor(int left, int right)
  * @param front_right Front right motor
  * @param front_left  Front left motor
  */
-void motor2(int back_right, int back_left, int front_right, int front_left)
+void motor_all(int back_right, int back_left, int front_right, int front_left)
 {
   wb_motor_set_torque(back_right_motor, compute_torque((float)back_right, 100.0, br_velocity, 1.0, 0.1, 1));
   wb_motor_set_torque(back_left_motor, compute_torque((float)back_left, 100.0, bl_velocity, 1.0, 0.1, 1));
@@ -74,7 +74,7 @@ unsigned short *line_sensor()
  * @brief Initializes the Renesas MCU controller.
  * 
  */
-void renesas_mcu_init()
+void init()
 {
   char str[100];
 
@@ -124,7 +124,7 @@ void renesas_mcu_init()
  * @brief Updates sensor values, should be called in main controller while loop.
  * 
  */
-void update_sensors()
+void update()
 {
   // encoder update
   double br_encoder = wb_position_sensor_get_value(back_right_encoder);
@@ -143,35 +143,4 @@ void update_sensors()
   // line sensor update
   for (int i = 0; i < N_SENSORS; i++)
     sensor[i] = wb_distance_sensor_get_value(sensor_handle[i]);
-}
-
-/**
- * @brief Computes the torque to be applied to the motor.
- * 
- * @param u Voltage
- * @param u_max Max. motor supply voltage
- * @param om Current motor velocity
- * @param om_max Free run velocity of the motor
- * @param t_max Stall torque of the motor
- * @param gear Gear
- * @return float 
- */
-float compute_torque(float u, float u_max, float om, float om_max, float t_max, float gear)
-{
-  return -(t_max * constrain(u, -u_max, u_max) / u_max - (t_max * gear) * om / (om_max / gear));
-}
-
-/**
- * @brief Get the gear ratio of a motor from node definition.
- * 
- * @param motor_node_name MCUMotor node name.
- * @return double Gear ratio.
- */
-double get_gear_ratio(char *motor_node_name)
-{
-  WbNodeRef robot_node = wb_supervisor_node_get_self();
-  WbFieldRef back_right_motor_field = wb_supervisor_node_get_field(robot_node, strcat(motor_node_name, "_motor"));
-  WbNodeRef back_right_motor_node = wb_supervisor_field_get_sf_node(back_right_motor_field);
-  WbFieldRef back_right_gear_ratio = wb_supervisor_node_get_field(back_right_motor_node, "gearRatio");
-  return wb_supervisor_field_get_sf_float(back_right_gear_ratio);
 }
