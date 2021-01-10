@@ -1,4 +1,4 @@
-#VRML_SIM R2020b utf8
+#VRML_SIM R2021a utf8
 
 PROTO MCUSensor [
   field SFColor color 0.12549 0.290196 0.529412
@@ -54,7 +54,7 @@ PROTO MCUSensor [
       contactMaterial "nofriction"
       boundingObject USE SENSOR
       physics Physics {
-        density 5000
+        density 4000
       }
     }
   }

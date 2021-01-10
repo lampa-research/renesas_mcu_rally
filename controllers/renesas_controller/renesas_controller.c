@@ -435,8 +435,8 @@ int main(int argc, char **argv)
     }
     line = weighted_sum / sum - 3.5;
 
-    motor2(60, 60, 60, 60);
-    handle(300 * line);
+    motor2(30, 30, 30, 30);
+    handle(10000 * line);
   };
 
   wb_robot_cleanup(); // this call is required for WeBots cleanup
