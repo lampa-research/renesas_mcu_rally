@@ -16,15 +16,13 @@
 #define FR_MOTOR_NAME "front_right"
 #define FL_MOTOR_NAME "front_left"
 
-// ToDo function that counts this
-#define N_SENSORS 8
-
 // defines and macros
-#define TIME_STEP 8
+#define TIME_STEP 10
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
 // function prototypes
-float compute_torque(float u, float u_max, float om, float om_max, float t_max, float gear);
-double get_gear_ratio(char *motor_node_name);
+float compute_torque(float u, float om, float gear);
+double get_gear_ratio();
+int get_number_sensors();
 
 #endif

@@ -3,32 +3,55 @@
 #include "string.h"
 
 /**
+ * @brief Motor parameters
+ * 
+ */
+#define W_NO_LOAD 1000.0
+#define V_NOMINAL 3.0
+#define T_STALL 0.005
+#define I_STALL 5.0
+#define I_NO_LOAD 0.2
+
+/**
  * @brief Computes the torque to be applied to the motor.
  * 
  * @param u Voltage
- * @param u_max Max. motor supply voltage
  * @param om Current motor velocity
- * @param om_max Free run velocity of the motor
- * @param t_max Stall torque of the motor
  * @param gear Gear
  * @return float 
  */
-float compute_torque(float u, float u_max, float om, float om_max, float t_max, float gear)
+float compute_torque(float u, float om, float gear)
 {
-  return -(t_max * constrain(u, -u_max, u_max) / u_max - (t_max * gear) * om / (om_max / gear));
+  float KW = V_NOMINAL / (W_NO_LOAD / gear);
+  float ubemf = KW * om;
+  float ua = u - ubemf;
+  float R = V_NOMINAL / I_STALL;
+  float i = ua / R + I_NO_LOAD;
+  float KT = T_STALL / I_STALL;
+  float t = (i - I_NO_LOAD) * KT * gear;
+  return -t;
 }
 
 /**
  * @brief Get the gear ratio of a motor from node definition.
  * 
- * @param motor_node_name MCUMotor node name.
  * @return double Gear ratio.
  */
-double get_gear_ratio(char *motor_node_name)
+double get_gear_ratio()
 {
   WbNodeRef robot_node = wb_supervisor_node_get_self();
-  WbFieldRef back_right_motor_field = wb_supervisor_node_get_field(robot_node, strcat(motor_node_name, "_motor"));
-  WbNodeRef back_right_motor_node = wb_supervisor_field_get_sf_node(back_right_motor_field);
-  WbFieldRef back_right_gear_ratio = wb_supervisor_node_get_field(back_right_motor_node, "gearRatio");
-  return wb_supervisor_field_get_sf_float(back_right_gear_ratio);
+  WbFieldRef gear_ratio = wb_supervisor_node_get_field(robot_node, "gearRatio");
+  return wb_supervisor_field_get_sf_float(gear_ratio);
+}
+
+/**
+ * @brief Get the number of sensors from node definition.
+ * 
+ * @return int 
+ */
+int get_number_sensors()
+{
+  WbNodeRef robot_node = wb_supervisor_node_get_self();
+  WbFieldRef n_sensors = wb_supervisor_node_get_field(robot_node, "numberOfSensors");
+  return wb_supervisor_field_get_sf_int32(n_sensors);
 }

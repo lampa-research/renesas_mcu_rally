@@ -28,13 +28,13 @@ bool started = false;
 
 // friction coefficients
 WbFieldRef cf_soft_field;
-float cf_soft = 0.45;
+float cf_soft = 0.55;
 float cf_soft_delta = 0.00005;
 WbFieldRef cf_medium_field;
-float cf_medium = 0.35;
+float cf_medium = 0.45;
 float cf_medium_delta = 0.00003;
 WbFieldRef cf_hard_field;
-float cf_hard = 0.25;
+float cf_hard = 0.35;
 float cf_hard_delta = 0.00001;
 
 // leds

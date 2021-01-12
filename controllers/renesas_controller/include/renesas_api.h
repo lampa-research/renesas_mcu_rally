@@ -12,16 +12,11 @@
 
 #include "renesas_api_webots.h"
 
-// defines and macros
-#define TIME_STEP 10
-#define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
-
 // function prototypes
-void handle(int angle);
-void motor(int left, int right);
-void motor_all(int back_left, int back_right, int front_left, int front_right);
-unsigned short* line_sensor();
 void init();
 void update();
+void handle(int angle);
+void motor(int back_right, int back_left, int front_right, int front_left);
+unsigned short* line_sensor();
 
 #endif

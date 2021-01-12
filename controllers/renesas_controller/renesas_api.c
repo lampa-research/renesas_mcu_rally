@@ -22,53 +22,10 @@ double br_encoder_previous = 0.0;
 double bl_encoder_previous = 0.0;
 double fr_encoder_previous = 0.0;
 double fl_encoder_previous = 0.0;
-WbDeviceTag sensor_handle[N_SENSORS];
-unsigned short sensor[N_SENSORS];
-
-/**
- * @brief Servo steering operation.
- * 
- * @param angle Servo operation angle: -90 to 90
- *              -90: 90-degree turn to left, 0: straight, 
- *              90: 90-degree turn to right 
- */
-void handle(int angle)
-{
-  WbDeviceTag center_motor = wb_robot_get_device("center_motor");
-  wb_motor_set_position(center_motor, constrain(angle, -60, 60) * M_PI / 180.0);
-}
-
-void motor(int left, int right)
-{
-  motor_all(right, left, right, left);
-}
-
-/**
- * @brief Motor speed control
- *        (0 is stopped, 100 is forward, and -100 is reverse)
- * 
- * @param back_right Back right motor
- * @param back_left Back left motor
- * @param front_right Front right motor
- * @param front_left  Front left motor
- */
-void motor_all(int back_right, int back_left, int front_right, int front_left)
-{
-  wb_motor_set_torque(back_right_motor, compute_torque((float)back_right, 100.0, br_velocity, 1.0, 0.1, 1));
-  wb_motor_set_torque(back_left_motor, compute_torque((float)back_left, 100.0, bl_velocity, 1.0, 0.1, 1));
-  wb_motor_set_torque(front_right_motor, compute_torque((float)front_right, 100.0, fr_velocity, 1.0, 0.1, 1));
-  wb_motor_set_torque(front_left_motor, compute_torque((float)front_left, 100.0, fl_velocity, 1.0, 0.1, 1));
-}
-
-/**
- * @brief Returns the values of the line sensors.
- * 
- * @return float* Sensor values.
- */
-unsigned short *line_sensor()
-{
-  return sensor;
-}
+int N_SENSORS = 32;
+WbDeviceTag sensor_handle[32];
+unsigned short sensor[32];
+double GEAR_RATIO = 10.0;
 
 /**
  * @brief Initializes the Renesas MCU controller.
@@ -111,6 +68,7 @@ void init()
   fr_encoder_previous = wb_position_sensor_get_value(front_right_encoder);
 
   // sensor init
+  N_SENSORS = get_number_sensors();
   char name[20];
   for (int i = 0; i < N_SENSORS; i++)
   {
@@ -118,6 +76,8 @@ void init()
     sensor_handle[i] = wb_robot_get_device(name); /* line sensors */
     wb_distance_sensor_enable(sensor_handle[i], TIME_STEP);
   }
+
+  GEAR_RATIO = get_gear_ratio();
 }
 
 /**
@@ -131,10 +91,10 @@ void update()
   double fr_encoder = wb_position_sensor_get_value(front_right_encoder);
   double bl_encoder = wb_position_sensor_get_value(back_left_encoder);
   double fl_encoder = wb_position_sensor_get_value(front_left_encoder);
-  br_velocity = -(br_encoder - br_encoder_previous) / TIME_STEP;
-  bl_velocity = -(bl_encoder - bl_encoder_previous) / TIME_STEP;
-  fr_velocity = -(fr_encoder - fr_encoder_previous) / TIME_STEP;
-  fl_velocity = -(fl_encoder - fl_encoder_previous) / TIME_STEP;
+  br_velocity = -1000.0 * (br_encoder - br_encoder_previous) / TIME_STEP;
+  bl_velocity = -1000.0 * (bl_encoder - bl_encoder_previous) / TIME_STEP;
+  fr_velocity = -1000.0 * (fr_encoder - fr_encoder_previous) / TIME_STEP;
+  fl_velocity = -1000.0 * (fl_encoder - fl_encoder_previous) / TIME_STEP;
   bl_encoder_previous = bl_encoder;
   br_encoder_previous = br_encoder;
   fl_encoder_previous = fl_encoder;
@@ -143,4 +103,44 @@ void update()
   // line sensor update
   for (int i = 0; i < N_SENSORS; i++)
     sensor[i] = wb_distance_sensor_get_value(sensor_handle[i]);
+}
+
+/**
+ * @brief Servo steering operation.
+ * 
+ * @param angle Servo operation angle: -90 to 90
+ *              -90: 90-degree turn to left, 0: straight, 
+ *              90: 90-degree turn to right 
+ */
+void handle(int angle)
+{
+  WbDeviceTag center_motor = wb_robot_get_device("center_motor");
+  wb_motor_set_position(center_motor, constrain(angle, -60, 60) * M_PI / 180.0);
+}
+
+/**
+ * @brief Motor speed control
+ *        (0 is stopped, 100 is forward, and -100 is reverse)
+ * 
+ * @param back_right Back right motor
+ * @param back_left Back left motor
+ * @param front_right Front right motor
+ * @param front_left  Front left motor
+ */
+void motor(int back_right, int back_left, int front_right, int front_left)
+{
+  wb_motor_set_torque(back_right_motor, compute_torque((float)back_right * 3.7 / 100, br_velocity, GEAR_RATIO));
+  wb_motor_set_torque(back_left_motor, compute_torque((float)back_left * 3.7 / 100, bl_velocity, GEAR_RATIO));
+  wb_motor_set_torque(front_right_motor, compute_torque((float)front_right * 3.7 / 100, fr_velocity, GEAR_RATIO));
+  wb_motor_set_torque(front_left_motor, compute_torque((float)front_left * 3.7 / 100, fl_velocity, GEAR_RATIO));
+}
+
+/**
+ * @brief Returns the values of the line sensors.
+ * 
+ * @return float* Sensor values.
+ */
+unsigned short *line_sensor()
+{
+  return sensor;
 }

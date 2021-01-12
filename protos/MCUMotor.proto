@@ -11,8 +11,8 @@ PROTO MCUMotor [
     endPoint HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 0 1
-        springConstant 0.001
-        dampingConstant 0.001
+        springConstant 0.0
+        dampingConstant 0.0
         suspensionAxis 0 1 0
       }
       device [
