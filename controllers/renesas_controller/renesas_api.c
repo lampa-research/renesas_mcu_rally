@@ -26,6 +26,7 @@ int N_SENSORS = 32;
 WbDeviceTag sensor_handle[32];
 unsigned short sensor[32];
 double GEAR_RATIO = 10.0;
+double current_time = 0.0;
 
 /**
  * @brief Initializes the Renesas MCU controller.
@@ -103,6 +104,9 @@ void update()
   // line sensor update
   for (int i = 0; i < N_SENSORS; i++)
     sensor[i] = wb_distance_sensor_get_value(sensor_handle[i]);
+
+  // time update
+  current_time += TIME_STEP / 1000.0;
 }
 
 /**
@@ -143,4 +147,14 @@ void motor(int back_right, int back_left, int front_right, int front_left)
 unsigned short *line_sensor()
 {
   return sensor;
+}
+
+/**
+ * @brief Returns the current time in seconds.
+ * 
+ * @return double Time in seconds.
+ */
+double time()
+{
+  return current_time;
 }

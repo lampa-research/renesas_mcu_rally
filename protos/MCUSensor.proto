@@ -4,12 +4,13 @@ PROTO MCUSensor [
   field SFColor color 0.12549 0.290196 0.529412
   field SFInt32 numberOfSensors 4
   field SFFloat distanceBetweenSensors 0.02
+  field SFFloat sensorBase 0.1
 ]
 {
   Slot {
     type "sensor-"
     endPoint Solid {
-      translation 0.1 0 0
+      translation %{=fields.sensorBase.value}% 0 0
       rotation 0 0 1 0
       children [
         DEF SENSOR Shape {
@@ -34,7 +35,7 @@ PROTO MCUSensor [
               name "%{=name}%"
               type "infra-red"
               numberOfRays 10
-              gaussianWidth 0.1
+              gaussianWidth 0.4
             }
             Transform {
               translation 0.02 0 %{=position}%

@@ -29,6 +29,8 @@ float compute_torque(float u, float om, float gear)
   float i = ua / R + I_NO_LOAD;
   float KT = T_STALL / I_STALL;
   float t = (i - I_NO_LOAD) * KT * gear;
+  if (t != t)
+    return 0;
   return -t;
 }
 

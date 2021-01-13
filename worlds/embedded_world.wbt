@@ -1,10 +1,6 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
-  basicTimeStep 5
-  defaultDamping Damping {
-    linear 0.1
-    angular 0.1
-  }
+  basicTimeStep 1
   coordinateSystem "NUE"
   contactProperties [
     ContactProperties {
@@ -18,27 +14,28 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.42979663610458374
+        0.15000000596046448
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.3378755748271942
+        0.20000000298023224
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.245960533618927
+        0.2643638551235199
       ]
     }
   ]
 }
 Viewpoint {
-  orientation 0.6334473106915413 0.7044859747893133 0.32006876745912766 5.03955919976483
-  position -1.3596092999466454 1.6514193352553672 1.2391026686087225
-  followType "None"
+  orientation 0.2671149646955138 0.9147057200736539 0.3032540870297593 4.526949506670211
+  position -3.5802233763900615 2.566796592856462 -0.515917243778928
+  follow "robot"
+  followType "Pan and Tilt Shot"
 }
 Floor {
   size 20 20
@@ -56,14 +53,6 @@ MCUTimingGate {
   translation 0.4 0 0
 }
 MCUCar {
-  carShape [
-    Transform {
-      children [
-        InertialUnit {
-        }
-      ]
-    }
-  ]
 }
-MCUTrackOval {
+MCUTrackTest {
 }

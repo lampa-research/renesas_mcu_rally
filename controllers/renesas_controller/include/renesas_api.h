@@ -18,5 +18,6 @@ void update();
 void handle(int angle);
 void motor(int back_right, int back_left, int front_right, int front_left);
 unsigned short* line_sensor();
+double time();
 
 #endif

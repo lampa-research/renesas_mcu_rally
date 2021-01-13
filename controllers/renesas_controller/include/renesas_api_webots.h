@@ -17,7 +17,7 @@
 #define FL_MOTOR_NAME "front_left"
 
 // defines and macros
-#define TIME_STEP 10
+#define TIME_STEP 5
 #define constrain(amt, low, high) ((amt) < (low) ? (low) : ((amt) > (high) ? (high) : (amt)))
 
 // function prototypes

@@ -30,7 +30,7 @@ PROTO MCUTyre [
       contactMaterial IS material
       boundingObject USE WHEEL_SHAPE
       physics Physics {
-        density 5000
+        density 3000
       }
     }
   }

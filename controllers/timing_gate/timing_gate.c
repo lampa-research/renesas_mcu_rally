@@ -155,9 +155,9 @@ int main(int argc, char **argv)
     display_timings(display_back);
 
     // handle friction
-    cf_soft = constrain(cf_soft - cf_soft_delta, 0.1, 1);
-    cf_medium = constrain(cf_medium - cf_medium_delta, 0.11, 1);
-    cf_hard = constrain(cf_hard - cf_hard_delta, 0.12, 1);
+    cf_soft = constrain(cf_soft - cf_soft_delta, 0.15, 1);
+    cf_medium = constrain(cf_medium - cf_medium_delta, 0.20, 1);
+    cf_hard = constrain(cf_hard - cf_hard_delta, 0.25, 1);
     wb_supervisor_field_set_mf_float(cf_soft_field, 0, cf_soft);
     wb_supervisor_field_set_mf_float(cf_medium_field, 0, cf_medium);
     wb_supervisor_field_set_mf_float(cf_hard_field, 0, cf_hard);
