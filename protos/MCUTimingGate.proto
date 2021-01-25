@@ -171,7 +171,7 @@ PROTO MCUTimingGate [
       }
       %{ end }%
       DistanceSensor {
-        translation 0 0.04 -0.14
+        translation 0 0.03 -0.14
         rotation 0 1 0 -1.5708
         name "distance_sensor"
       }
@@ -179,7 +179,7 @@ PROTO MCUTimingGate [
     name "timing_gate"
     boundingObject USE GATE
     supervisor TRUE
-    controller "timing_gate"
+    controller "referee"
   }
 
 }

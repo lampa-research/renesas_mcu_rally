@@ -1,6 +1,6 @@
 #VRML_SIM R2021a utf8
 WorldInfo {
-  basicTimeStep 1
+  basicTimeStep 5
   coordinateSystem "NUE"
   contactProperties [
     ContactProperties {
@@ -14,34 +14,47 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.15000000596046448
+        0.49234044551849365
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.20000000298023224
+        0.41539737582206726
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.2643638551235199
+        0.33845433592796326
       ]
     }
   ]
 }
 Viewpoint {
-  orientation 0.2671149646955138 0.9147057200736539 0.3032540870297593 4.526949506670211
-  position -3.5802233763900615 2.566796592856462 -0.515917243778928
-  follow "robot"
+  orientation -0.6216370931469033 -0.7659288236786672 -0.16407425600038952 1.0525561126889298
+  position -6.071546055182672 5.214541206648912 6.278491281849227
   followType "Pan and Tilt Shot"
+  followSmoothness 0.01
 }
-Floor {
-  size 20 20
-  appearance Parquetry {
-    type "light strip"
+Solid {
+  children [
+    DEF FLOOR Shape {
+      appearance MattePaint {
+        baseColor 0.203922 0.396078 0.643137
+        textureTransform TextureTransform {
+          scale 100 100
+        }
+      }
+      geometry Plane {
+        size 100 100
+      }
+    }
+  ]
+  boundingObject Plane {
+    size 100 100
   }
+  locked TRUE
 }
 TexturedBackground {
   texture "stadium"
@@ -50,9 +63,7 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 MCUTimingGate {
-  translation 0.4 0 0
+  translation 0.7 0 0
 }
-MCUCar {
-}
-MCUTrackTest {
+MCUTestTrack {
 }

@@ -1,0 +1,31 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUStraight [
+  field SFVec3f translation 0 0.001 0
+  field SFRotation rotation 0 0 1 0
+  field SFFloat length 0.6
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.001
+    children [
+      Shape {
+        appearance PBRAppearance {
+          baseColorMap ImageTexture {
+            url [
+              "textures/straight.png"
+            ]
+          }
+          transparency 0.001
+          roughness 1
+          metalness 0
+        }
+        geometry Plane {
+          size %{=fields.length.value}% 0.512
+        }
+      }
+    ]
+  }
+}

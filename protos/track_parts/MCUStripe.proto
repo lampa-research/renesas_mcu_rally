@@ -1,0 +1,30 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUStripe [
+  field SFVec3f translation 0 0.002 0
+  field SFRotation rotation 0 0 1 0
+  field SFFloat length 0.3
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.001
+    children [
+      Shape {
+        appearance Appearance {
+          material Material {
+          }
+          texture ImageTexture {
+            url [
+              "textures/stripe.png"
+            ]
+          }
+        }
+        geometry Plane {
+          size 0.02 %{=fields.length.value}%
+        }
+      }
+    ]
+  }
+}

@@ -9,8 +9,7 @@ enum states_t
   RIGHT_TURN,
   LEFT_CHANGE_DETECTED,
   LEFT_TURN
-} states;
-int state = FOLLOW;
+} state = FOLLOW;
 double last_time = 0.0;
 int left_change_pending = 0;
 int right_change_pending = 0;
@@ -23,7 +22,7 @@ int main(int argc, char **argv)
   while (wb_robot_step(TIME_STEP) != -1)
   {
     update();
-    printf("%d ", state);
+    // printf("%d ", state);
     unsigned short *sensor = line_sensor();
     float line = 0, sum = 0, weighted_sum = 0;
     bool double_line = 0;
@@ -45,9 +44,9 @@ int main(int argc, char **argv)
           right_change++;
         }
       }
-      printf("%d ", sensor[i]);
+      // printf("%d ", sensor[i]);
     }
-    printf("\n");
+    // printf("%d %d %d\n", double_line, left_change, right_change);
     line = weighted_sum / sum - 3.5;
 
     switch (state)
@@ -55,7 +54,7 @@ int main(int argc, char **argv)
     case FOLLOW:
       motor(40, 40, 40, 40);
       handle(1000 * line);
-      if (double_line > 6)
+      if (double_line > 5)
       {
         last_time = time();
         state = CORNER_IN;
@@ -72,7 +71,7 @@ int main(int argc, char **argv)
       }
       break;
     case CORNER_IN:
-      motor(20, 20, 20, 20);
+      motor(10, 10, 10, 10);
       handle(1000 * line);
       if (time() - last_time > 0.2 && (left_change > 3 || right_change > 3))
       {
@@ -81,9 +80,9 @@ int main(int argc, char **argv)
       }
       break;
     case CORNER_OUT:
-      motor(20, 20, 20, 20);
+      motor(10, 10, 10, 10);
       handle(1000 * line);
-      if (time() - last_time > 0.5)
+      if (time() - last_time > 0.75)
       {
         last_time = time();
         state = FOLLOW;
@@ -97,7 +96,7 @@ int main(int argc, char **argv)
         last_time = time();
         state = RIGHT_TURN;
       }
-      if (time() - last_time > 1.5)
+      if (time() - last_time > 2.5)
       {
         last_time = time();
         state = FOLLOW;
@@ -105,7 +104,7 @@ int main(int argc, char **argv)
       break;
     case RIGHT_TURN:
       motor(20, 20, 20, 20);
-      if (time() - last_time < 0.4)
+      if (time() - last_time < 0.45)
         handle(-25);
       else
         handle(5);
@@ -123,7 +122,7 @@ int main(int argc, char **argv)
         last_time = time();
         state = LEFT_TURN;
       }
-      if (time() - last_time > 1.5)
+      if (time() - last_time > 2.5)
       {
         last_time = time();
         state = FOLLOW;
@@ -131,7 +130,7 @@ int main(int argc, char **argv)
       break;
     case LEFT_TURN:
       motor(20, 20, 20, 20);
-      if (time() - last_time < 0.4)
+      if (time() - last_time < 0.45)
         handle(25);
       else
         handle(-5);

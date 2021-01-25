@@ -1,7 +1,8 @@
 #VRML_SIM R2021a utf8
 
 PROTO MCUCar [
-
+  field SFString teamName "Competition organiser"
+  field SFString robotName "Safety car"
   field SFFloat track 0.12
   field SFFloat wheelBase 0.15
   field SFFloat sensorBase 0.10
