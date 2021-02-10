@@ -156,7 +156,7 @@ void mcu_camera_tracking()
   double orientation[4] = {-1, 0, 0, 1.5708};
   wb_supervisor_field_set_sf_rotation(orientation_field, orientation);
   WbFieldRef position_field = wb_supervisor_node_get_field(viewpoint_node, "position");
-  double position[3] = {0, 3, 0};
+  double position[3] = {0, 4, 0};
   wb_supervisor_field_set_sf_vec3f(position_field, position);
 }
 
@@ -170,7 +170,7 @@ void mcu_camera_pan_tilt(double waypoint[2])
   WbFieldRef follow_type_field = wb_supervisor_node_get_field(viewpoint_node, "followType");
   wb_supervisor_field_set_sf_string(follow_type_field, "Pan and Tilt Shot");
   WbFieldRef position_field = wb_supervisor_node_get_field(viewpoint_node, "position");
-  double position[3] = {waypoint[0] + 0.02 * (rand() % 100 - 50), 1, waypoint[1] + 0.02 * (rand() % 100 - 50)};
+  double position[3] = {waypoint[0] + 0.03 * (rand() % 100 - 50), 0.5 + (rand() % 100) / 50.0, waypoint[1] + 0.03 * (rand() % 100 - 50)};
   wb_supervisor_field_set_sf_vec3f(position_field, position);
 }
 
@@ -182,8 +182,8 @@ void mcu_leaderboard_display_current(WbNodeRef robot_node, char *data)
   strcat(display_string, ": ");
   WbFieldRef robot_name_field = wb_supervisor_node_get_field(robot_node, "robotName");
   strcat(display_string, wb_supervisor_field_get_sf_string(robot_name_field));
-  wb_supervisor_set_label(0, display_string, 0, 0, 0.1, 0x000000, 0, "Arial Black");
-  wb_supervisor_set_label(1, data, 0, 0.90, 0.1, 0xffff00, 0, "Lucida Console");
+  wb_supervisor_set_label(0, display_string, 0, 0, 0.1, 0xe9c46a, 0, "Arial Black");
+  wb_supervisor_set_label(1, data, 0, 0.90, 0.1, 0xe9c46a, 0, "Arial Black");
 }
 
 void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names[50][50], char robot_names[50][50], double laps[50], double times[50], double best_laps[50])
@@ -208,7 +208,7 @@ void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names
     sprintf(temp_string, "%-2d    %-32.32s %-16.16s %5.2f  %10.2f  %8.2f\n", i + 1, tosort[i].team_name, tosort[i].robot_name, tosort[i].laps, tosort[i].total_time, tosort[i].best_lap);
     strcat(display_string, temp_string);
   }
-  wb_supervisor_set_label(2, display_string, 0.1, 0.2, 0.05, 0x000000, 0, "Lucida Console");
+  wb_supervisor_set_label(2, display_string, 0.02, 0.1, 0.06, 0xe9c46a, 0, "Lucida Console");
 }
 
 int compare(const void *a, const void *b)

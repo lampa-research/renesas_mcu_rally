@@ -1,0 +1,23 @@
+site_name: Renesas MCU Rally Virtual
+
+theme: readthedocs
+
+nav:
+  - Home: index.md
+  - Installation:
+    - WeBots simulator: webots_simulator.md
+    - Simulation environment: simulation_environment.md
+  - First steps:
+    - Project setup: project_setup.md
+    - Creating controllers: creating_controllers.md
+  - Programming guide:
+    - API functions: api_functions.md
+    - Line following: line_following.md
+    - State machine programming: state_machine_programming.md
+  - Manuals:
+    - Tuning the MCU car: tuning_the_mcucar.md
+    - Building 2D tracks: building_2d_tracks.md
+    - Building 3D tracks: building_3d_tracks.md
+  - Competition:
+    - Regulations: regulations.md
+    - Guide for participants: guide_for_participants.md

@@ -15,3 +15,5 @@
 
 # build folders
 *build/
+
+controllers/my_controller

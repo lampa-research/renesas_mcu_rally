@@ -16,7 +16,7 @@ PROTO MCUCar [
   field SFColor frontColor 1 1 1
   field SFColor sensorColor 1 1 1
   field MFNode{Shape{}, Transform{}} carShape []
-  field SFString controller "renesas_controller"
+  field SFString controller "safety_car_controller"
 ]
 {
   Robot {

@@ -1,0 +1,27 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUFloor [
+  field SFColor color 0.203922 0.396078 0.643137
+  field SFFloat size 100
+]
+{
+  Solid {
+    children [
+      DEF FLOOR Shape {
+        appearance MattePaint {
+          baseColor IS color
+          textureTransform TextureTransform {
+            scale %{=fields.size.value}% %{=fields.size.value}%
+          }
+        }
+        geometry Plane {
+          size %{=fields.size.value}% %{=fields.size.value}%
+        }
+      }
+    ]
+    boundingObject Plane {
+      size %{=fields.size.value}% %{=fields.size.value}%
+    }
+    locked TRUE
+  }
+}

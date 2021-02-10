@@ -18,7 +18,8 @@ enum states_t
   TRACK_SAFETY_CAR,
   PAUSE,
   SPAWN_COMPETITOR,
-  TRACK_COMPETITOR
+  TRACK_COMPETITOR,
+  PRACTICE
 } competition_state = WELCOME;
 double competition_state_init_time = 0.0;
 bool competition_state_init = true;
@@ -62,6 +63,15 @@ int main(int argc, char **argv)
 {
   wb_robot_init();
   srand(time(NULL));
+
+  // get mode
+  WbNodeRef self_node = wb_supervisor_node_get_self();
+  WbFieldRef mode_field = wb_supervisor_node_get_field(self_node, "mode");
+  const char *mode_value = wb_supervisor_field_get_sf_string(mode_field);
+  if (strcmp(mode_value, "practice") == 0)
+  {
+    competition_state = PRACTICE;
+  }
 
   // get competitors from file
   competitor_nb = mcu_competitor_nb();
@@ -165,8 +175,9 @@ int main(int argc, char **argv)
       if (competition_state_init)
       {
         mcu_leaderboard_display_leaderboard(competitor_current, team_names, robot_names, laps, times, best_laps);
+        competition_state_init = false;
       }
-      if (current_time / 1000.0 - competition_state_init_time > 3.0)
+      if (current_time / 1000.0 - competition_state_init_time > 5.0)
       {
         if (competitor_current < competitor_nb)
         {
@@ -244,6 +255,19 @@ int main(int argc, char **argv)
         }
       }
 
+      char str[100];
+      sprintf(str, "lap: %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
+      mcu_leaderboard_display_current(robot_node, str);
+      mcu_display_timings(display_front, current_lap_time, laptimes);
+      mcu_display_timings(display_back, current_lap_time, laptimes);
+
+      cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
+      cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
+      cf_hard = constrain(cf_hard - CF_HARD_DELTA * TIME_STEP / 1000.0, CF_HARD_MIN, CF_HARD_MAX);
+      mcu_set_friction("soft", cf_soft);
+      mcu_set_friction("medium", cf_medium);
+      mcu_set_friction("hard", cf_hard);
+
       distance_previous = distance_gate;
       distance_gate = wb_distance_sensor_get_value(distance_sensor);
       if (distance_gate < DETECTION_LIMIT && distance_previous >= DETECTION_LIMIT && current_lap_time > 1000)
@@ -289,18 +313,6 @@ int main(int argc, char **argv)
           competition_state_init_time = current_time / 1000.0;
         }
       }
-      char str[100];
-      sprintf(str, "lap:      %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
-      mcu_leaderboard_display_current(robot_node, str);
-      mcu_display_timings(display_front, current_lap_time, laptimes);
-      mcu_display_timings(display_back, current_lap_time, laptimes);
-
-      cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
-      cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
-      cf_hard = constrain(cf_hard - CF_HARD_DELTA * TIME_STEP / 1000.0, CF_HARD_MIN, CF_HARD_MAX);
-      mcu_set_friction("soft", cf_soft);
-      mcu_set_friction("medium", cf_medium);
-      mcu_set_friction("hard", cf_hard);
 
       // if missed waypoint
       if (current_time / 1000.0 - competitor_waypoint_time > 3.0)
@@ -322,6 +334,89 @@ int main(int argc, char **argv)
         competition_state = PAUSE;
         competition_state_init = true;
         competition_state_init_time = current_time / 1000.0;
+      }
+      break;
+    case PRACTICE:
+      if (competition_state_init)
+      {
+        // wait for the start of the lap
+        distance_gate = wb_distance_sensor_get_value(distance_sensor);
+        if (distance_gate < DETECTION_LIMIT)
+        {
+          for (int i = 0; i < 5; i++)
+          {
+            wb_led_set(led_front[i], 0);
+            wb_led_set(led_back[i], 0);
+          }
+          competition_state_init = false;
+          WbNodeRef root_node = wb_supervisor_node_get_root();
+          WbFieldRef root_children_field = wb_supervisor_node_get_field(root_node, "children");
+          robot_node = wb_supervisor_field_get_mf_node(root_children_field, -1);
+        }
+      }
+      else
+      {
+        current_lap_time += TIME_STEP;
+        distance_previous = distance_gate;
+        distance_gate = wb_distance_sensor_get_value(distance_sensor);
+        if (distance_gate < DETECTION_LIMIT && distance_previous >= DETECTION_LIMIT && current_lap_time > 1000)
+        {
+          for (int i = 4; i >= 1; i--)
+          {
+            laptimes[i] = laptimes[i - 1];
+          }
+          laptimes[0] = current_lap_time / 1000.0;
+          current_lap++;
+          current_lap_time = 0;
+          if (current_lap < 5)
+          {
+            for (int i = 0; i < current_lap; i++)
+            {
+              wb_led_set(led_front[i], 1);
+              wb_led_set(led_back[i], 1);
+            }
+          }
+
+          if (current_lap > 4)
+          {
+            // leaderboard data
+            double total_time = 0.0;
+            double best_lap = 9999.99;
+            for (int i = 0; i < 5; i++)
+            {
+              total_time += laptimes[i];
+              if (laptimes[i] < best_lap)
+                best_lap = laptimes[i];
+            }
+            current_lap = 5.0;
+            laps[competitor_current] = current_lap;
+            times[competitor_current] = total_time;
+            best_laps[competitor_current] = best_lap;
+
+            WbFieldRef team_name_field = wb_supervisor_node_get_field(robot_node, "teamName");
+            strcpy(team_names[competitor_current], wb_supervisor_field_get_sf_string(team_name_field));
+            WbFieldRef robot_name_field = wb_supervisor_node_get_field(robot_node, "robotName");
+            strcpy(robot_names[competitor_current], wb_supervisor_field_get_sf_string(robot_name_field));
+
+            competitor_nb = 1;
+            competitor_current++;
+            competition_state = PAUSE;
+            competition_state_init = true;
+            competition_state_init_time = current_time / 1000.0;
+          }
+        }
+        char str[100];
+        sprintf(str, "lap:      %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
+        mcu_leaderboard_display_current(robot_node, str);
+        mcu_display_timings(display_front, current_lap_time, laptimes);
+        mcu_display_timings(display_back, current_lap_time, laptimes);
+
+        // cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
+        // cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
+        // cf_hard = constrain(cf_hard - CF_HARD_DELTA * TIME_STEP / 1000.0, CF_HARD_MIN, CF_HARD_MAX);
+        // mcu_set_friction("soft", cf_soft);
+        // mcu_set_friction("medium", cf_medium);
+        // mcu_set_friction("hard", cf_hard);
       }
       break;
     }

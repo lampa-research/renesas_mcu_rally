@@ -14,56 +14,34 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.49234044551849365
+        0.55
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.41539737582206726
+        0.45
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.33845433592796326
+        0.35
       ]
     }
   ]
 }
 Viewpoint {
-  orientation -0.6216370931469033 -0.7659288236786672 -0.16407425600038952 1.0525561126889298
-  position -6.071546055182672 5.214541206648912 6.278491281849227
+  orientation -1 0 0 1.5708
+  position 0 10 0
   followType "Pan and Tilt Shot"
   followSmoothness 0.01
 }
-Solid {
-  children [
-    DEF FLOOR Shape {
-      appearance MattePaint {
-        baseColor 0.203922 0.396078 0.643137
-        textureTransform TextureTransform {
-          scale 100 100
-        }
-      }
-      geometry Plane {
-        size 100 100
-      }
-    }
-  ]
-  boundingObject Plane {
-    size 100 100
-  }
-  locked TRUE
+MCUFloor {
 }
 TexturedBackground {
   texture "stadium"
   luminosity 0.3
 }
 TexturedBackgroundLight {
-}
-MCUTimingGate {
-  translation 0.7 0 0
-}
-MCUTestTrack {
 }
