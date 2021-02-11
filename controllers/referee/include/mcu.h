@@ -5,6 +5,8 @@
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+#include <stdint.h>
 
 #include <webots/supervisor.h>
 #include <webots/display.h>
@@ -26,6 +28,8 @@
 #define CF_HARD_MAX 0.35
 #define CF_HARD_MIN 0.25
 #define CF_HARD_DELTA 0.001
+
+typedef intptr_t ssize_t;
 
 struct board_data_t
 {
@@ -51,5 +55,6 @@ void mcu_camera_pan_tilt(double waypoint[2]);
 void mcu_leaderboard_display_current(WbNodeRef robot_node, char *data);
 void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names[50][50], char robot_names[50][50], double laps[50], double times[50], double best_laps[50]);
 int compare(const void *a, const void *b);
+ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif

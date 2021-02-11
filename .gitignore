@@ -16,4 +16,6 @@
 # build folders
 *build/
 
+# documentation-related
 controllers/my_controller
+docs/site/

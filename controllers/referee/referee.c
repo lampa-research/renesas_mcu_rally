@@ -406,17 +406,17 @@ int main(int argc, char **argv)
           }
         }
         char str[100];
-        sprintf(str, "lap:      %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
+        sprintf(str, "lap: %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
         mcu_leaderboard_display_current(robot_node, str);
         mcu_display_timings(display_front, current_lap_time, laptimes);
         mcu_display_timings(display_back, current_lap_time, laptimes);
 
-        // cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
-        // cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
-        // cf_hard = constrain(cf_hard - CF_HARD_DELTA * TIME_STEP / 1000.0, CF_HARD_MIN, CF_HARD_MAX);
-        // mcu_set_friction("soft", cf_soft);
-        // mcu_set_friction("medium", cf_medium);
-        // mcu_set_friction("hard", cf_hard);
+        cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
+        cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
+        cf_hard = constrain(cf_hard - CF_HARD_DELTA * TIME_STEP / 1000.0, CF_HARD_MIN, CF_HARD_MAX);
+        mcu_set_friction("soft", cf_soft);
+        mcu_set_friction("medium", cf_medium);
+        mcu_set_friction("hard", cf_hard);
       }
       break;
     }
