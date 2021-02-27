@@ -43,6 +43,22 @@ for (int i = 0; i < 8; i++)
 printf("\n");
 ```
 
+## double *encoders()
+
+Returns the motor speeds (in rad/s). An array of 4 values is returned: `{back_right, back_left, front_right, front_left}`, where:
+
+- `back_right`: Back right motor velocity
+
+- `back_left`: Back left motor velocity
+
+- `front_right`: Front right motor velocity
+
+- `front_left`: Front left motor velocity
+
+## double *imu()
+
+Returns the roll, pitch, and yaw angles of an inertial measurement unit, attached to the main platform. An array of 3 values is returned: `{roll, pitch, yaw}`.
+
 ## double time()
 
-Returns the current time in seconds since the start of the simulation.
+Returns the current time in seconds since the start of the controller program.

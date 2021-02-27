@@ -1,4 +1,4 @@
 3
-MCUCarHard.wbo
-MCUCarMedium.wbo
-MCUCarSoft.wbo
+MCUCar1.wbo
+MCUCar2.wbo
+MCUCar3.wbo

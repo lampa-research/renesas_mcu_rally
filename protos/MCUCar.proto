@@ -1,8 +1,10 @@
 #VRML_SIM R2021a utf8
 
 PROTO MCUCar [
-  field SFString teamName "Competition organiser"
-  field SFString robotName "Safety car"
+  field SFVec3f translation 0 0.03 0
+  field SFRotation rotation 0 0 1 0
+  field SFString teamName "Team name"
+  field SFString robotName "Robot name"
   field SFFloat track 0.12
   field SFFloat wheelBase 0.15
   field SFFloat sensorBase 0.10
@@ -16,11 +18,12 @@ PROTO MCUCar [
   field SFColor frontColor 1 1 1
   field SFColor sensorColor 1 1 1
   field MFNode{Shape{}, Transform{}} carShape []
-  field SFString controller "safety_car_controller"
+  field SFString controller "my_controller"
 ]
 {
-  Robot {
-    translation 0 0.1 0
+  DEF MCUCar Robot {
+    translation IS translation
+    rotation IS rotation
     children [
       Transform {
         translation 0 0 0
@@ -39,6 +42,9 @@ PROTO MCUCar [
                   size %{=fields.wheelBase.value*0.67}% 0.02 %{=fields.track.value-0.05}%
                 }
               }
+              InertialUnit {
+                name "imu"
+              }
               Transform {
                 translation %{=fields.wheelBase.value*0.33}% 0 0
                 children [
@@ -56,7 +62,7 @@ PROTO MCUCar [
                     name "rod_center"
                     boundingObject USE ROD_CENTER
                     physics Physics {
-                      density 1000
+                      density 5000
                     }
                   }
                 ]
@@ -64,7 +70,7 @@ PROTO MCUCar [
             ]
             boundingObject USE BODY
             physics Physics {
-              density 4000
+              density 5000
             }
           }
         ]
@@ -198,7 +204,7 @@ PROTO MCUCar [
                         name "rod_right"
                         boundingObject USE ROD
                         physics Physics {
-                          density 1000
+                          density 5000
                         }
                       }
                     ]
@@ -220,7 +226,7 @@ PROTO MCUCar [
                         name "rod_left"
                         boundingObject USE ROD
                         physics Physics {
-                          density 1000
+                          density 5000
                         }
                       }
                     ]
@@ -247,7 +253,7 @@ PROTO MCUCar [
                 name "sensor"
                 boundingObject USE FRONT
                 physics Physics {
-                  density 1000
+                  density 5000
                 }
               }
             }
@@ -255,7 +261,7 @@ PROTO MCUCar [
           name "front"
           boundingObject USE FRONT
           physics Physics {
-            density 2000
+            density 5000
           }
         }
       }

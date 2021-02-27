@@ -4,6 +4,7 @@ PROTO MCUTimingGate [
   field SFVec3f translation 0 0 0
   field SFRotation rotation 0 0 1 0
   field SFString{"practice", "competition"} mode "practice"
+  field SFInt32 laps 5
 ]
 {
   Robot {
@@ -172,7 +173,7 @@ PROTO MCUTimingGate [
       }
       %{ end }%
       DistanceSensor {
-        translation 0 0.03 -0.14
+        translation 0 0.035 -0.14
         rotation 0 1 0 -1.5708
         name "distance_sensor"
       }

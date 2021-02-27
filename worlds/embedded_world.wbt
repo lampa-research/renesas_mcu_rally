@@ -14,26 +14,26 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.55
+        0.9343891143798828
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.45
+        0.8606647253036499
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.35
+        0.8368622064590454
       ]
     }
   ]
 }
 Viewpoint {
-  orientation -1 0 0 1.5708
-  position 0 10 0
+  orientation -0.6246127795953014 0.7279736808358468 0.2826892208354259 1.1124493172963472
+  position 3.7705433105216772 4.873349592491425 5.081478640087655
   followType "Pan and Tilt Shot"
   followSmoothness 0.01
 }
@@ -44,4 +44,12 @@ TexturedBackground {
   luminosity 0.3
 }
 TexturedBackgroundLight {
+}
+MCUTimingGate {
+  translation 0.6 0 0
+  laps 3
+}
+MCUTrackTest {
+}
+DEF MCUCar MCUCar {
 }

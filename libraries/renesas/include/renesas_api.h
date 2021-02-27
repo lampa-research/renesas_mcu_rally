@@ -9,15 +9,18 @@
 #include <webots/distance_sensor.h>
 #include <webots/light_sensor.h>
 #include <webots/position_sensor.h>
+#include <webots/inertial_unit.h>
 
 #include "renesas_api_webots.h"
 
-// function prototypes
+// high-level function prototypes
 void init();
 void update();
 void handle(int angle);
 void motor(int back_right, int back_left, int front_right, int front_left);
 unsigned short *line_sensor();
+double *encoders();
+double *imu();
 double time();
 
 #endif

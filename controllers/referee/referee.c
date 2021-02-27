@@ -50,6 +50,7 @@ char competitors[50][50];
 int competitor_current = 0;
 char team_names[50][50];
 char robot_names[50][50];
+int laps_total = 5;
 double laps[50];
 double times[50];
 double best_laps[50];
@@ -72,6 +73,11 @@ int main(int argc, char **argv)
   {
     competition_state = PRACTICE;
   }
+
+  // get number of laps
+  WbFieldRef laps_field = wb_supervisor_node_get_field(self_node, "laps");
+  laps_total = wb_supervisor_field_get_sf_int32(laps_field);
+  laps_total = constrain(laps_total, 1, 5);
 
   // get competitors from file
   competitor_nb = mcu_competitor_nb();
@@ -290,18 +296,18 @@ int main(int argc, char **argv)
           }
         }
 
-        if (current_lap > 4)
+        if (current_lap >= laps_total)
         {
           // leaderboard data
           double total_time = 0.0;
           double best_lap = 9999.99;
-          for (int i = 0; i < 5; i++)
+          for (int i = 0; i < laps_total; i++)
           {
             total_time += laptimes[i];
             if (laptimes[i] < best_lap)
               best_lap = laptimes[i];
           }
-          current_lap = 5.0;
+          current_lap = laps_total;
           laps[competitor_current] = current_lap;
           times[competitor_current] = total_time;
           best_laps[competitor_current] = best_lap;
@@ -349,9 +355,10 @@ int main(int argc, char **argv)
             wb_led_set(led_back[i], 0);
           }
           competition_state_init = false;
-          WbNodeRef root_node = wb_supervisor_node_get_root();
-          WbFieldRef root_children_field = wb_supervisor_node_get_field(root_node, "children");
-          robot_node = wb_supervisor_field_get_mf_node(root_children_field, -1);
+          // WbNodeRef root_node = wb_supervisor_node_get_root();
+          // WbFieldRef root_children_field = wb_supervisor_node_get_field(root_node, "children");
+          // robot_node = wb_supervisor_field_get_mf_node(root_children_field, -1);
+          robot_node = wb_supervisor_node_get_from_def("MCUCar");
         }
       }
       else
@@ -377,18 +384,18 @@ int main(int argc, char **argv)
             }
           }
 
-          if (current_lap > 4)
+          if (current_lap >= laps_total)
           {
             // leaderboard data
             double total_time = 0.0;
             double best_lap = 9999.99;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < laps_total; i++)
             {
               total_time += laptimes[i];
               if (laptimes[i] < best_lap)
                 best_lap = laptimes[i];
             }
-            current_lap = 5.0;
+            current_lap = laps_total;
             laps[competitor_current] = current_lap;
             times[competitor_current] = total_time;
             best_laps[competitor_current] = best_lap;

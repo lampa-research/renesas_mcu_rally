@@ -4,7 +4,7 @@ To set up your Renesas MCU Rally Virtual simulation:
 
 - Open WeBots, select File -> Open World...
 - Navigate to the Simulation environment folder obtained during the installation.
-- Open: embedded_world.wbt
+- Open: empty_world.wbt from the worlds folder
 
 An empty world should appear, as shown in the following figure.
 
@@ -21,7 +21,6 @@ To set up your first simulation:
 Assets can be added by clicking on the (+) icon (second icon in the toolbar, shortcut Ctrl-Shift-A). The assets are added to the scene tree on the left, below the currently selected asset. Start by adding the test track.
 
 - Pause and reset the simulation (click on the pause icon || and the rewind icon <<).
-- Select the bottom-most asset in the scene tree (TexturedBackgroundLight).
 - Click on the add asset icon.
 - Under PROTO nodes (Current project), select MCUTrackTest and click Add.
 - Save the modified world (Save icon, shortcut Ctrl-Shift-S).

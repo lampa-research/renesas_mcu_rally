@@ -45,6 +45,14 @@ The following example program uses the state machine programming principle and r
 ```c
 #include "renesas_api.h"
 
+#define FAST 30.0
+#define MEDIUM 20.0
+#define SLOW 10.0
+#define BRAKE -40.0
+
+#define STRICT 1000.0
+#define LOOSE 10.0
+
 enum states_t
 {
   FOLLOW,
@@ -55,14 +63,16 @@ enum states_t
   LEFT_CHANGE_DETECTED,
   LEFT_TURN
 } state = FOLLOW;
+
 double last_time = 0.0;
 int left_change_pending = 0;
 int right_change_pending = 0;
+int detected_state = FOLLOW;
 
 int main(int argc, char **argv)
 {
-  wb_robot_init();
-  init();
+  wb_robot_init(); // this call is required for WeBots initialisation
+  init();          // initialises the renesas MCU controller
 
   while (wb_robot_step(TIME_STEP) != -1)
   {
@@ -76,14 +86,14 @@ int main(int argc, char **argv)
     {
       weighted_sum += sensor[i] * i;
       sum += sensor[i];
-      if (sensor[i] < 400) // white under sensor, used for detecting white stripe markings
+      if (sensor[i] < 400)
       {
         double_line++;
-        if (i < 4) // count white under sensor on the left side
+        if (i < 4)
         {
           left_change++;
         }
-        else // and the right side
+        else
         {
           right_change++;
         }
@@ -94,100 +104,132 @@ int main(int argc, char **argv)
     switch (state)
     {
     case FOLLOW:
-      motor(40, 40, 40, 40);
-      handle(1000 * line);
-      if (double_line > 5)
+      motor(FAST, FAST, FAST, FAST);
+      handle(STRICT * line);
+      if (double_line > 6)
       {
-        last_time = time();
-        state = CORNER_IN;
+        if (detected_state == CORNER_IN)
+        {
+          last_time = time();
+          state = CORNER_IN;
+          printf("CORNER IN\n");
+        }
+        detected_state = CORNER_IN;
       }
       else if (time() - last_time > 0.2 && right_change > 3)
       {
-        last_time = time();
-        state = RIGHT_CHANGE_DETECTED;
+        if (detected_state == RIGHT_CHANGE_DETECTED)
+        {
+          last_time = time();
+          state = RIGHT_CHANGE_DETECTED;
+          printf("RIGHT_CHANGE_DETECTED\n");
+        }
+        detected_state = RIGHT_CHANGE_DETECTED;
       }
       else if (time() - last_time > 0.2 && left_change > 3)
       {
-        last_time = time();
-        state = LEFT_CHANGE_DETECTED;
+        if (detected_state == LEFT_CHANGE_DETECTED)
+        {
+          last_time = time();
+          state = LEFT_CHANGE_DETECTED;
+          printf("LEFT_CHANGE_DETECTED\n");
+        }
+        detected_state = LEFT_CHANGE_DETECTED;
       }
       break;
     case CORNER_IN:
-      motor(10, 10, 10, 10);
-      handle(1000 * line);
+      if (time() - last_time < 0.1)
+      {
+        motor(BRAKE, BRAKE, BRAKE, BRAKE);
+      }
+      else
+      {
+        motor(SLOW, SLOW, SLOW, SLOW);
+      }
+
+      handle(LOOSE * line);
       if (time() - last_time > 0.2 && (left_change > 3 || right_change > 3))
       {
         last_time = time();
         state = CORNER_OUT;
+        printf("CORNER OUT\n");
       }
       break;
     case CORNER_OUT:
-      motor(10, 10, 10, 10);
-      handle(1000 * line);
-      if (time() - last_time > 0.75)
+      motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
+      handle(STRICT * line);
+      if (time() - last_time > 0.70)
       {
         last_time = time();
         state = FOLLOW;
+        printf("FOLLOW\n");
       }
       break;
     case RIGHT_CHANGE_DETECTED:
-      motor(20, 20, 20, 20);
-      handle(100 * line);
+      motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
+      handle(LOOSE * line);
       if (double_line == 0)
       {
         last_time = time();
         state = RIGHT_TURN;
+        printf("RIGHT_TURN\n");
       }
       if (time() - last_time > 2.5)
       {
         last_time = time();
         state = FOLLOW;
+        printf("FOLLOW\n");
       }
       break;
     case RIGHT_TURN:
-      motor(20, 20, 20, 20);
+      motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
       if (time() - last_time < 0.45)
-        handle(-25);
-      else
-        handle(5);
-      if (double_line > 2)
+        handle(-40);
+      else if (time() - last_time < 0.8)
+        handle(20);
+      else if (double_line > 2)
       {
         last_time = time();
         state = FOLLOW;
+        printf("FOLLOW\n");
       }
       break;
     case LEFT_CHANGE_DETECTED:
-      motor(20, 20, 20, 20);
-      handle(100 * line);
+      motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
+      handle(LOOSE * line);
       if (double_line == 0)
       {
         last_time = time();
         state = LEFT_TURN;
+        printf("LEFT TURN\n");
       }
       if (time() - last_time > 2.5)
       {
         last_time = time();
         state = FOLLOW;
+        printf("FOLLOW\n");
       }
       break;
     case LEFT_TURN:
-      motor(20, 20, 20, 20);
+      motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
       if (time() - last_time < 0.45)
-        handle(25);
-      else
-        handle(-5);
-      if (double_line > 2)
+        handle(40);
+      else if (time() - last_time < 0.8)
+        handle(-20);
+      else if (double_line > 2)
       {
         last_time = time();
         state = FOLLOW;
+        printf("FOLLOW\n");
       }
       break;
     }
   };
 
-  wb_robot_cleanup();
+  wb_robot_cleanup(); // this call is required for WeBots cleanup
 
   return 0;
 }
+
 
 ```

@@ -6,27 +6,19 @@
  * @brief Global variables.
  * 
  */
-WbDeviceTag back_right_motor;
-WbDeviceTag back_left_motor;
-WbDeviceTag front_right_motor;
-WbDeviceTag front_left_motor;
-WbDeviceTag back_right_encoder;
-WbDeviceTag back_left_encoder;
-WbDeviceTag front_right_encoder;
-WbDeviceTag front_left_encoder;
-double br_velocity = 0.0;
-double bl_velocity = 0.0;
-double fr_velocity = 0.0;
-double fl_velocity = 0.0;
-double br_encoder_previous = 0.0;
-double bl_encoder_previous = 0.0;
-double fr_encoder_previous = 0.0;
-double fl_encoder_previous = 0.0;
-int N_SENSORS = 32;
+WbDeviceTag motor_handle[4]; // br, bl, fr, fl
+WbDeviceTag encoder_handle[4];
+double encoder_current[4] = {0.0, 0.0, 0.0, 0.0};
+double encoder_previous[4] = {0.0, 0.0, 0.0, 0.0};
+double velocity[4] = {0.0, 0.0, 0.0, 0.0};
+int n_sensors = 32;
 WbDeviceTag sensor_handle[32];
 unsigned short sensor[32];
-double GEAR_RATIO = 10.0;
+double gear_ratio = 10.0;
 double current_time = 0.0;
+WbDeviceTag center_motor;
+WbDeviceTag imu_handle;
+const double *rpy;
 
 /**
  * @brief Initializes the Renesas MCU controller.
@@ -36,49 +28,48 @@ void init()
 {
   char str[100];
 
-  back_right_motor = wb_robot_get_device(strcat(strcpy(str, BR_MOTOR_NAME), "_motor"));
-  back_left_motor = wb_robot_get_device(strcat(strcpy(str, BL_MOTOR_NAME), "_motor"));
-  front_right_motor = wb_robot_get_device(strcat(strcpy(str, FR_MOTOR_NAME), "_motor"));
-  front_left_motor = wb_robot_get_device(strcat(strcpy(str, FL_MOTOR_NAME), "_motor"));
-
   // motor init
-  wb_motor_set_position(back_left_motor, INFINITY);
-  wb_motor_set_position(back_right_motor, INFINITY);
-  wb_motor_set_position(front_left_motor, INFINITY);
-  wb_motor_set_position(front_right_motor, INFINITY);
+  motor_handle[0] = wb_robot_get_device(strcat(strcpy(str, BR_MOTOR_NAME), "_motor"));
+  motor_handle[1] = wb_robot_get_device(strcat(strcpy(str, BL_MOTOR_NAME), "_motor"));
+  motor_handle[2] = wb_robot_get_device(strcat(strcpy(str, FR_MOTOR_NAME), "_motor"));
+  motor_handle[3] = wb_robot_get_device(strcat(strcpy(str, FL_MOTOR_NAME), "_motor"));
 
-  wb_motor_set_torque(back_left_motor, 0.0);
-  wb_motor_set_torque(back_right_motor, 0.0);
-  wb_motor_set_torque(front_left_motor, 0.0);
-  wb_motor_set_torque(front_right_motor, 0.0);
+  for (int i = 0; i < 4; i++)
+  {
+    wb_motor_set_position(motor_handle[i], INFINITY);
+    wb_motor_set_torque(motor_handle[i], 0.0);
+  }
 
   // encoder init
-  back_right_encoder = wb_robot_get_device(strcat(strcpy(str, BR_MOTOR_NAME), "_encoder"));
-  back_left_encoder = wb_robot_get_device(strcat(strcpy(str, BL_MOTOR_NAME), "_encoder"));
-  front_right_encoder = wb_robot_get_device(strcat(strcpy(str, FR_MOTOR_NAME), "_encoder"));
-  front_left_encoder = wb_robot_get_device(strcat(strcpy(str, FL_MOTOR_NAME), "_encoder"));
+  encoder_handle[0] = wb_robot_get_device(strcat(strcpy(str, BR_MOTOR_NAME), "_encoder"));
+  encoder_handle[1] = wb_robot_get_device(strcat(strcpy(str, BL_MOTOR_NAME), "_encoder"));
+  encoder_handle[2] = wb_robot_get_device(strcat(strcpy(str, FR_MOTOR_NAME), "_encoder"));
+  encoder_handle[3] = wb_robot_get_device(strcat(strcpy(str, FL_MOTOR_NAME), "_encoder"));
 
-  wb_position_sensor_enable(back_left_encoder, TIME_STEP);
-  wb_position_sensor_enable(back_right_encoder, TIME_STEP);
-  wb_position_sensor_enable(front_left_encoder, TIME_STEP);
-  wb_position_sensor_enable(front_right_encoder, TIME_STEP);
-
-  bl_encoder_previous = wb_position_sensor_get_value(back_left_encoder);
-  br_encoder_previous = wb_position_sensor_get_value(back_right_encoder);
-  fl_encoder_previous = wb_position_sensor_get_value(front_left_encoder);
-  fr_encoder_previous = wb_position_sensor_get_value(front_right_encoder);
+  for (int i = 0; i < 4; i++)
+  {
+    wb_position_sensor_enable(encoder_handle[i], TIME_STEP);
+    encoder_previous[i] = wb_position_sensor_get_value(encoder_handle[i]);
+  }
 
   // sensor init
-  N_SENSORS = get_number_sensors();
+  n_sensors = get_number_sensors();
   char name[20];
-  for (int i = 0; i < N_SENSORS; i++)
+  for (int i = 0; i < n_sensors; i++)
   {
     sprintf(name, "sensor_%d", i);
     sensor_handle[i] = wb_robot_get_device(name); /* line sensors */
     wb_distance_sensor_enable(sensor_handle[i], TIME_STEP);
   }
 
-  GEAR_RATIO = get_gear_ratio();
+  gear_ratio = get_gear_ratio();
+
+  // handle motor
+  center_motor = wb_robot_get_device("center_motor");
+
+  // imu
+  imu_handle = wb_robot_get_device("imu");
+  wb_inertial_unit_enable(imu_handle, TIME_STEP);
 }
 
 /**
@@ -88,22 +79,19 @@ void init()
 void update()
 {
   // encoder update
-  double br_encoder = wb_position_sensor_get_value(back_right_encoder);
-  double fr_encoder = wb_position_sensor_get_value(front_right_encoder);
-  double bl_encoder = wb_position_sensor_get_value(back_left_encoder);
-  double fl_encoder = wb_position_sensor_get_value(front_left_encoder);
-  br_velocity = -1000.0 * (br_encoder - br_encoder_previous) / TIME_STEP;
-  bl_velocity = -1000.0 * (bl_encoder - bl_encoder_previous) / TIME_STEP;
-  fr_velocity = -1000.0 * (fr_encoder - fr_encoder_previous) / TIME_STEP;
-  fl_velocity = -1000.0 * (fl_encoder - fl_encoder_previous) / TIME_STEP;
-  bl_encoder_previous = bl_encoder;
-  br_encoder_previous = br_encoder;
-  fl_encoder_previous = fl_encoder;
-  fr_encoder_previous = fr_encoder;
+  for (int i = 0; i < 4; i++)
+  {
+    encoder_current[i] = wb_position_sensor_get_value(encoder_handle[i]);
+    velocity[i] = -1000.0 * (encoder_current[i] - encoder_previous[i]) / TIME_STEP;
+    encoder_previous[i] = encoder_current[i];
+  }
 
   // line sensor update
-  for (int i = 0; i < N_SENSORS; i++)
+  for (int i = 0; i < n_sensors; i++)
     sensor[i] = wb_distance_sensor_get_value(sensor_handle[i]);
+
+  // imu update
+  rpy = wb_inertial_unit_get_roll_pitch_yaw(imu_handle);
 
   // time update
   current_time += TIME_STEP / 1000.0;
@@ -112,13 +100,12 @@ void update()
 /**
  * @brief Servo steering operation.
  * 
- * @param angle Servo operation angle: -90 to 90
- *              -90: 90-degree turn to left, 0: straight, 
- *              90: 90-degree turn to right 
+ * @param angle Servo operation angle: -60 to 60
+ *              -60: 60-degree turn to left, 0: straight, 
+ *              60: 60-degree turn to right 
  */
 void handle(int angle)
 {
-  WbDeviceTag center_motor = wb_robot_get_device("center_motor");
   wb_motor_set_position(center_motor, constrain(angle, -60, 60) * M_PI / 180.0);
 }
 
@@ -133,10 +120,10 @@ void handle(int angle)
  */
 void motor(int back_right, int back_left, int front_right, int front_left)
 {
-  wb_motor_set_torque(back_right_motor, compute_torque((float)back_right * 3.7 / 100, br_velocity, GEAR_RATIO));
-  wb_motor_set_torque(back_left_motor, compute_torque((float)back_left * 3.7 / 100, bl_velocity, GEAR_RATIO));
-  wb_motor_set_torque(front_right_motor, compute_torque((float)front_right * 3.7 / 100, fr_velocity, GEAR_RATIO));
-  wb_motor_set_torque(front_left_motor, compute_torque((float)front_left * 3.7 / 100, fl_velocity, GEAR_RATIO));
+  wb_motor_set_torque(motor_handle[0], compute_torque((float)back_right * 3.7 / 100, velocity[0], gear_ratio));
+  wb_motor_set_torque(motor_handle[1], compute_torque((float)back_left * 3.7 / 100, velocity[1], gear_ratio));
+  wb_motor_set_torque(motor_handle[2], compute_torque((float)front_right * 3.7 / 100, velocity[2], gear_ratio));
+  wb_motor_set_torque(motor_handle[3], compute_torque((float)front_left * 3.7 / 100, velocity[3], gear_ratio));
 }
 
 /**
@@ -147,6 +134,26 @@ void motor(int back_right, int back_left, int front_right, int front_left)
 unsigned short *line_sensor()
 {
   return sensor;
+}
+
+/**
+ * @brief Returns the current velocities.
+ * 
+ * @return double* Motor velocities (in rad/s)
+ */
+double *encoders()
+{
+  return velocity;
+}
+
+/**
+ * @brief Returns roll, pitch, and yaw angles.
+ * 
+ * @return double* Roll, pitch, and yaw in rad.
+ */
+double *imu()
+{
+  return (double *)rpy;
 }
 
 /**
