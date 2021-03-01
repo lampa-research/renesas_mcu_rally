@@ -1,6 +1,6 @@
 # Project setup
 
-To set up your Virtual Renesas MCU Rally simulation:
+To set up the Renesas Virtual MCU Rally simulation from scratch:
 
 - Open WeBots, select File -> Open World...
 - Navigate to the Simulation environment folder obtained during the installation.

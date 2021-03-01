@@ -1,6 +1,6 @@
 # Simulation environment
 
-Download the Virtual Renesas MCU Rally environment from the Git repository:
+Download the Renesas Virtual MCU Rally environment from the Git repository:
 
 - Navigate to [Latest releases](https://github.com/ul-lakos/renesas_mcu_rally/releases/)
 - Download the .zip file

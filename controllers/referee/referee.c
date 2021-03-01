@@ -117,7 +117,7 @@ int main(int argc, char **argv)
       if (competition_state_init)
       {
         competition_state_init = false;
-        wb_supervisor_set_label(1, "Welcome to the Renesas MCU Rally Virtual competition!", 0, 0, 0.1, 0x000000, 0, "Arial Black");
+        wb_supervisor_set_label(1, "Welcome to the Renesas Virtual MCU Rally competition!", 0, 0, 0.1, 0x000000, 0, "Arial Black");
       }
       if (current_time / 1000.0 - competition_state_init_time > 3.0)
       {
