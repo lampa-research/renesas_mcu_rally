@@ -1,0 +1,78 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCURightAngle3D [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+]
+{
+  %{
+    local os = require('os')
+    local wbrandom = require('wbrandom')
+    wbrandom.seed(os.clock() + os.time())
+  }%
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.001
+    children [
+      Transform {
+        translation 0 0.0309 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColorMap ImageTexture {
+                url [
+                  "textures/ra.png"
+                ]
+              }
+              transparency 0.001
+              roughness 1
+              metalness 0
+            }
+            geometry Plane {
+              size 0.512 0.512
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 0 0.015 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size 0.3 0.03 0.3
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 0 0.03 0
+        children [
+          Solid {
+            translation -0.15 0 -0.15
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry DEF RA ElevationGrid {
+                  xDimension 2
+                  xSpacing 0.3
+                  zDimension 2
+                  zSpacing 0.3
+                }
+              }
+            ]
+            name "%{='ra_' .. wbrandom.integer(0, 10000000)}%"
+            boundingObject USE RA
+          }
+        ]
+      }
+    ]
+  }  
+}

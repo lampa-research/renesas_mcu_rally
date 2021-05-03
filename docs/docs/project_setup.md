@@ -22,7 +22,7 @@ Assets can be added by clicking on the (+) icon (second icon in the toolbar, sho
 
 - Pause and reset the simulation (click on the pause icon || and the rewind icon <<).
 - Click on the add asset icon.
-- Under PROTO nodes (Current project), select MCUTrackTest and click Add.
+- Under PROTO nodes (Current project), select tracks_3d->MCUTrackTest and click Add.
 - Save the modified world (Save icon, shortcut Ctrl-Shift-S).
 
 ![test_track](img/test_track.png)

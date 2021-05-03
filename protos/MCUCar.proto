@@ -1,7 +1,7 @@
 #VRML_SIM R2021a utf8
 
 PROTO MCUCar [
-  field SFVec3f translation 0 0.03 0
+  field SFVec3f translation 0 0.06 0
   field SFRotation rotation 0 0 1 0
   field SFString teamName "Team name"
   field SFString robotName "Robot name"
@@ -18,13 +18,30 @@ PROTO MCUCar [
   field SFColor frontColor 1 1 1
   field SFColor sensorColor 1 1 1
   field MFNode{Shape{}, Transform{}} carShape []
+  field MFNode{Shape{}, Transform{}} carShapeFront []
   field SFString controller "my_controller"
+  field SFFloat weightPenalty 0.0
 ]
 {
   DEF MCUCar Robot {
     translation IS translation
     rotation IS rotation
     children [
+      Solid {
+        children [
+          Shape {
+            geometry DEF WEIGHT Sphere {
+              radius 0.001
+            }
+          }
+        ]
+        name "weight"
+        boundingObject USE WEIGHT
+        physics Physics {
+          density -1
+          mass %{=fields.weightPenalty.value+0.001}%
+        }
+      }
       Transform {
         translation 0 0 0
         children IS carShape
@@ -37,6 +54,8 @@ PROTO MCUCar [
               DEF BODY Shape {
                 appearance PBRAppearance {
                   baseColor IS backColor
+                  roughness 1
+                  metalness 0
                 }
                 geometry Box {
                   size %{=fields.wheelBase.value*0.67}% 0.02 %{=fields.track.value-0.05}%
@@ -53,6 +72,8 @@ PROTO MCUCar [
                       DEF ROD_CENTER Shape {
                         appearance PBRAppearance {
                           baseColor 0 0 0
+                          roughness 1
+                          metalness 0
                         }
                         geometry Box {
                           size %{=fields.wheelBase.value}% 0.015 0.015
@@ -132,31 +153,19 @@ PROTO MCUCar [
           translation %{=fields.wheelBase.value*0.67}% 0 0
           rotation 0 0 1 0
           children [
+            Transform {
+              translation 0 0 0
+              children IS carShapeFront
+            }
             Shape {
               appearance PBRAppearance {
                 baseColor IS frontColor
+                roughness 1
+                metalness 0
               }
               geometry DEF FRONT Box {
                 size 0.04 0.02 %{=fields.track.value-0.05}%
               }
-            }
-            Transform {
-              translation 0 0 %{=fields.track.value*0.5}%
-              children [
-                Slot {
-                  type "motor+"
-                  endPoint MCUMotor {
-                    name "front_right"
-                    gearRatio IS gearRatio
-                    tyre MCUTyre {
-                      name "tyre_front_right"
-                      material IS tyreType
-                      width IS tyreWidth
-                      radius IS tyreRadius
-                    }
-                  }
-                }
-              ]
             }
             Transform {
               translation 0 0 %{=-fields.track.value*0.5}%
@@ -176,12 +185,30 @@ PROTO MCUCar [
                 }
               ]
             }
+            Transform {
+              translation 0 0 %{=fields.track.value*0.5}%
+              children [
+                Slot {
+                  type "motor+"
+                  endPoint MCUMotor {
+                    name "front_right"
+                    gearRatio IS gearRatio
+                    tyre MCUTyre {
+                      name "tyre_front_right"
+                      material IS tyreType
+                      width IS tyreWidth
+                      radius IS tyreRadius
+                    }
+                  }
+                }
+              ]
+            }
             HingeJoint {
               jointParameters HingeJointParameters {
                 axis 0 0 1
                 anchor 0.02 0 0
-                minStop -0.1
-                maxStop 0.1
+                minStop -0.001
+                maxStop 1
                 dampingConstant 0.01
               }
               endPoint Solid {
@@ -195,6 +222,8 @@ PROTO MCUCar [
                           DEF ROD Shape {
                             appearance PBRAppearance {
                               baseColor 0 0 0
+                              roughness 1
+                              metalness 0
                             }
                             geometry Box {
                               size %{=fields.sensorBase.value}% 0.01 0.01
@@ -217,6 +246,8 @@ PROTO MCUCar [
                           Shape {
                             appearance PBRAppearance {
                               baseColor 0 0 0
+                              roughness 1
+                              metalness 0
                             }
                             geometry Box {
                               size %{=fields.sensorBase.value}% 0.01 0.01
@@ -235,8 +266,8 @@ PROTO MCUCar [
                     jointParameters HingeJointParameters {
                       axis 0 0 1
                       anchor %{=fields.sensorBase.value}% 0 0
-                      minStop -0.1
-                      maxStop 0.1
+                      minStop -0.001
+                      maxStop 1
                       dampingConstant 0.01
                     }
                     endPoint Slot {

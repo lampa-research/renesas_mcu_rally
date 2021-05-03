@@ -1,0 +1,79 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUStraight3D [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+  field SFFloat length 0.6
+]
+{
+  %{
+    local os = require('os')
+    local wbrandom = require('wbrandom')
+    wbrandom.seed(os.clock() + os.time())
+  }%
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.001
+    children [
+      Transform {
+        translation 0 0.031 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColorMap ImageTexture {
+                url [
+                  "textures/straight.png"
+                ]
+              }
+              transparency 0.001
+              roughness 1
+              metalness 0
+            }
+            geometry Plane {
+              size %{=fields.length.value}% 0.512
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 0 0.015 0
+        children [
+          Shape {
+            appearance PBRAppearance {
+              roughness 1
+              metalness 0
+            }
+            geometry Box {
+              size %{=fields.length.value}% 0.03 0.3
+            }
+          }
+        ]
+      }
+      Transform {
+        translation 0 0.03 0
+        children [
+          Solid {
+            translation %{=-fields.length.value/2}% 0 -0.15
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  roughness 1
+                  metalness 0
+                }
+                geometry DEF STRAIGHT ElevationGrid {
+                  xDimension 2
+                  xSpacing %{=fields.length.value}%
+                  zDimension 2
+                  zSpacing 0.3
+                }
+              }
+            ]
+            name "%{='str_' .. wbrandom.integer(0, 10000000)}%"
+            boundingObject USE STRAIGHT
+          }
+        ]
+      }
+    ]
+  }  
+}

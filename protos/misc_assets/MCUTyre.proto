@@ -7,6 +7,17 @@ PROTO MCUTyre [
   field SFFloat radius 0.02
 ]
 {
+  %{
+    local red = 1
+    local green = 1
+    local blue = 1
+    if fields.material.value == "soft" then
+      green = 0
+      blue = 0
+    elseif fields.material.value == "medium" then
+      blue = 0
+    end
+  }%
   Slot {
     type "tyre-"
     endPoint Solid {
@@ -22,7 +33,19 @@ PROTO MCUTyre [
           geometry Cylinder {
             height IS width
             radius IS radius
-            subdivision 64
+            subdivision 256
+          }
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor %{=red}% %{=green}% %{=blue}%
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height %{=fields.width.value+0.001}%
+            radius %{=fields.radius.value*0.80}%
+            subdivision 32
           }
         }
       ]
@@ -30,7 +53,7 @@ PROTO MCUTyre [
       contactMaterial IS material
       boundingObject USE WHEEL_SHAPE
       physics Physics {
-        density 3000
+        density 5000
       }
     }
   }

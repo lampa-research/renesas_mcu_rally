@@ -1,0 +1,141 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUTrackTest3D [
+]
+{
+  Group {
+    children [
+      MCUStraight3D {
+        translation 0 0 0
+        length 3
+      }
+      MCUStripe3D {
+        translation 1.232 0.032 0
+      }
+      MCUStripe3D {
+        translation 1.181 0.032 0
+      }
+      MCURightAngle3D {
+        translation 1.64 0 7.74904e-08
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStraight3D {
+        translation 1.64 0 0.444
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUCurve4503D {
+        translation 1.7509 0 0.730247
+        rotation 0 1 0 -2.3561953071795863
+      }
+      MCUCurve6003D {
+        translation 1.44687 0 1.27958
+        rotation 0 1 0 3.14159
+      }
+      MCUStraight3D {
+        translation 0.636 0 1.385
+      }
+      MCUCurve4503D {
+        translation -0.175 0 1.491
+      }
+      MCUCurve4503D {
+        translation -0.373692 0 1.99644
+        rotation 0 1 0 0.785398
+      }
+      MCUCurve4503D {
+        translation -0.156918 0 2.49467
+        rotation 0 1 0 1.5708
+      }
+      MCUCurve6003D {
+        translation 0.0259999 0 2.425
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStraight3D {
+        translation 0.132003 0 3.236
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStripe3D {
+        translation 0.132 0.032 3.162
+        rotation 0 1 0 1.5708
+      }
+      MCUStripe3D {
+        translation 0.132 0.032 3.207
+        rotation 0 1 0 1.5708
+      }
+      MCURightAngle3D {
+        translation 0.132 0 3.685
+        rotation 0 1 0 3.14159
+      }
+      MCUStraight3D {
+        translation -1.016 0 3.685
+        length 2
+      }
+      MCUStripe3D {
+        translation -1.634 0.032 3.685
+      }
+      MCUStripe3D {
+        translation -1.68 0.032 3.685
+      }
+      MCURightAngle3D {
+        translation -2.165 0 3.685
+        rotation 0 -1 0 -1.5707953071795862
+      }
+      MCUStraight3D {
+        translation -2.165 0 3.236
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStripe3D {
+        translation -2.092 0.032 3.155
+        rotation 0 1 0 1.5708
+        length 0.15
+      }
+      MCUStripe3D {
+        translation -2.092 0.032 3.113
+        rotation 0 1 0 1.5708
+        length 0.15
+      }
+      MCURightLaneChange3D {
+        translation -2.015 0 2.425
+        rotation 0 1 0 1.5708
+      }
+      MCUStraight3D {
+        translation -1.865 0 1.715
+        rotation 0 1 0 1.5708
+        length 0.4
+      }
+      MCUStripe3D {
+        translation -1.936 0.032 1.67
+        rotation 0 1 0 1.5708
+        length 0.15
+      }
+      MCUStripe3D {
+        translation -1.936 0.032 1.623
+        rotation 0 1 0 1.5708
+        length 0.15
+      }
+      MCULeftLaneChange3D {
+        translation -2.015 0 1.004
+        rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStraight3D {
+        translation -2.165 0 0.321
+        rotation 0 1 0 1.5708
+        length 0.35
+      }
+      MCUStripe3D {
+        translation -2.165 0.032 0.441008
+        rotation 0 1 0 1.5708
+      }
+      MCUStripe3D {
+        translation -2.165 0.032 0.400008
+        rotation 0 1 0 1.5708
+      }
+      MCURightAngle3D {
+        translation -2.165 0 0
+      }
+      MCUStraight3D {
+        translation -1.758 0 0
+        length 0.52
+      }
+    ]
+  }
+}

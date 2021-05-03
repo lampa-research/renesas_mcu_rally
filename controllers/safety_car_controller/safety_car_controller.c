@@ -1,5 +1,6 @@
 #include "renesas_api.h"
 
+#define UPRAMP 60.0
 #define FAST 30.0
 #define MEDIUM 20.0
 #define SLOW 10.0
@@ -16,7 +17,9 @@ enum states_t
   RIGHT_CHANGE_DETECTED,
   RIGHT_TURN,
   LEFT_CHANGE_DETECTED,
-  LEFT_TURN
+  LEFT_TURN,
+  RAMP_UP,
+  RAMP_DOWN
 } state = FOLLOW;
 
 double last_time = 0.0;
@@ -33,6 +36,7 @@ int main(int argc, char **argv)
   {
     update();
     unsigned short *sensor = line_sensor();
+    double *angles = imu();
     float line = 0, sum = 0, weighted_sum = 0;
     bool double_line = 0;
     bool left_change = 0;
@@ -41,7 +45,7 @@ int main(int argc, char **argv)
     {
       weighted_sum += sensor[i] * i;
       sum += sensor[i];
-      if (sensor[i] < 400)
+      if (sensor[i] < 500)
       {
         double_line++;
         if (i < 4)
@@ -61,7 +65,19 @@ int main(int argc, char **argv)
     case FOLLOW:
       motor(FAST, FAST, FAST, FAST);
       handle(STRICT * line);
-      if (double_line > 6)
+      if (angles[1] > 0.1)
+      {
+        last_time = time();
+        state = RAMP_UP;
+        printf("RAMP UP\n");
+      }
+      else if (angles[1] < -0.1)
+      {
+        last_time = time();
+        state = RAMP_DOWN;
+        printf("RAMP DOWN\n");
+      }
+      else if (double_line > 6)
       {
         if (detected_state == CORNER_IN)
         {
@@ -140,9 +156,9 @@ int main(int argc, char **argv)
       motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
       if (time() - last_time < 0.45)
         handle(-40);
-      else if (time() - last_time < 0.8)
+      else if (time() - last_time < 0.6)
         handle(20);
-      else if (double_line > 2)
+      else if (double_line > 1)
       {
         last_time = time();
         state = FOLLOW;
@@ -169,9 +185,29 @@ int main(int argc, char **argv)
       motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
       if (time() - last_time < 0.45)
         handle(40);
-      else if (time() - last_time < 0.8)
+      else if (time() - last_time < 0.6)
         handle(-20);
-      else if (double_line > 2)
+      else if (double_line > 1)
+      {
+        last_time = time();
+        state = FOLLOW;
+        printf("FOLLOW\n");
+      }
+      break;
+    case RAMP_UP:
+      motor(UPRAMP, UPRAMP, UPRAMP, UPRAMP);
+      handle(STRICT * line);
+      if (angles[1] < 0.05)
+      {
+        last_time = time();
+        state = FOLLOW;
+        printf("FOLLOW\n");
+      }
+      break;
+    case RAMP_DOWN:
+      motor(SLOW, SLOW, SLOW, SLOW);
+      handle(STRICT * line);
+      if (angles[1] > -0.05)
       {
         last_time = time();
         state = FOLLOW;

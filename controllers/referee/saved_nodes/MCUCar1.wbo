@@ -3,5 +3,5 @@ MCUCar {
   teamName "Test"
   robotName "M1"
   tyreType "medium"
-  controller "demo_controller_1"
+  controller "my_controller"
 }

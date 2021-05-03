@@ -16,6 +16,8 @@ PROTO MCUSensor [
         DEF SENSOR Shape {
           appearance PBRAppearance {
             baseColor IS color
+            roughness 1
+            metalness 0
           }
           geometry Box {
             size 0.02 0.02 %{=fields.numberOfSensors.value * fields.distanceBetweenSensors.value + 0.02}%
@@ -30,22 +32,23 @@ PROTO MCUSensor [
             end
         }%
             DistanceSensor {
-              translation 0.02 0 %{=position}%
-              rotation 0 0 1 -1.5708
+              translation 0.020 -0.005 %{=position}%
+              rotation 0 0 1 -1.5
               name "%{=name}%"
               type "infra-red"
               numberOfRays 10
-              gaussianWidth 0.4
+              gaussianWidth 0.3
             }
             Transform {
-              translation 0.02 0 %{=position}%
+              translation 0.010 -0.005 %{=position}%
+              rotation 0 0 1 -1.5
               children [
                 Shape {
                   appearance PBRAppearance {
                     baseColor 0 0 0
                   }
                   geometry Box {
-                    size 0.005 0.005 0.005
+                    size 0.020 0.005 0.005
                   }
                 } 
               ]

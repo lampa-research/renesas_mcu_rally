@@ -153,10 +153,10 @@ void mcu_camera_tracking()
   WbFieldRef follow_type_field = wb_supervisor_node_get_field(viewpoint_node, "followType");
   wb_supervisor_field_set_sf_string(follow_type_field, "Tracking Shot");
   WbFieldRef orientation_field = wb_supervisor_node_get_field(viewpoint_node, "orientation");
-  double orientation[4] = {-1, 0, 0, 1.5708};
+  double orientation[4] = {-1, 0, 0, 1};
   wb_supervisor_field_set_sf_rotation(orientation_field, orientation);
   WbFieldRef position_field = wb_supervisor_node_get_field(viewpoint_node, "position");
-  double position[3] = {0, 4, 0};
+  double position[3] = {0, 3, 2};
   wb_supervisor_field_set_sf_vec3f(position_field, position);
 }
 
@@ -183,7 +183,7 @@ void mcu_leaderboard_display_current(WbNodeRef robot_node, char *data)
   WbFieldRef robot_name_field = wb_supervisor_node_get_field(robot_node, "robotName");
   strcat(display_string, wb_supervisor_field_get_sf_string(robot_name_field));
   wb_supervisor_set_label(0, display_string, 0, 0, 0.1, 0xe9c46a, 0, "Arial Black");
-  wb_supervisor_set_label(1, data, 0, 0.90, 0.1, 0xe9c46a, 0, "Arial Black");
+  wb_supervisor_set_label(1, data, 0, 0.85, 0.1, 0xe9c46a, 0, "Arial Black");
 }
 
 void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names[50][50], char robot_names[50][50], double laps[50], double times[50], double best_laps[50])
@@ -208,6 +208,8 @@ void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names
     sprintf(temp_string, "%-2d    %-32.32s %-16.16s %5.2f  %10.2f  %8.2f\n", i + 1, tosort[i].team_name, tosort[i].robot_name, tosort[i].laps, tosort[i].total_time, tosort[i].best_lap);
     strcat(display_string, temp_string);
   }
+  wb_supervisor_set_label(0, "", 0, 0, 0.1, 0xe9c46a, 0, "Arial Black");
+  wb_supervisor_set_label(1, "", 0, 0.85, 0.1, 0xe9c46a, 0, "Arial Black");
   wb_supervisor_set_label(2, display_string, 0.02, 0.1, 0.06, 0xe9c46a, 0, "Lucida Console");
 }
 

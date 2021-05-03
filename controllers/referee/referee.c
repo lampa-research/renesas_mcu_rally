@@ -33,6 +33,7 @@ long current_time = 0;
 double laptimes[5] = {0, 0, 0, 0, 0};
 int current_lap = 0;
 long current_lap_time = 0;
+int update_counter = 0;
 
 // safety car
 bool started = false;
@@ -261,11 +262,22 @@ int main(int argc, char **argv)
         }
       }
 
-      char str[100];
-      sprintf(str, "lap: %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
-      mcu_leaderboard_display_current(robot_node, str);
-      mcu_display_timings(display_front, current_lap_time, laptimes);
-      mcu_display_timings(display_back, current_lap_time, laptimes);
+      if (++update_counter == 10)
+      {
+        update_counter = 0;
+        char str[100];
+        if (current_lap == 0)
+        {
+          sprintf(str, "lap: %6.1f\nlap time: %6.1f\n", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
+        }
+        else
+        {
+          sprintf(str, "lap: %6.1f\nlap time: %6.1f\nprevious: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0, laptimes[0]);
+        }
+        mcu_leaderboard_display_current(robot_node, str);
+        mcu_display_timings(display_front, current_lap_time, laptimes);
+        mcu_display_timings(display_back, current_lap_time, laptimes);
+      }
 
       cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
       cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
@@ -412,11 +424,23 @@ int main(int argc, char **argv)
             competition_state_init_time = current_time / 1000.0;
           }
         }
-        char str[100];
-        sprintf(str, "lap: %6.2f\nlap time: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
-        mcu_leaderboard_display_current(robot_node, str);
-        mcu_display_timings(display_front, current_lap_time, laptimes);
-        mcu_display_timings(display_back, current_lap_time, laptimes);
+
+        if (++update_counter == 10)
+        {
+          update_counter = 0;
+          char str[100];
+          if (current_lap == 0)
+          {
+            sprintf(str, "lap: %6.1f\nlap time: %6.1f\n", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0);
+          }
+          else
+          {
+            sprintf(str, "lap: %6.1f\nlap time: %6.1f\nprevious: %6.2f", current_lap + (double)competitor_waypoint_nb / ((double)safety_car_waypoint_nb + 1.0), current_lap_time / 1000.0, laptimes[0]);
+          }
+          mcu_leaderboard_display_current(robot_node, str);
+          mcu_display_timings(display_front, current_lap_time, laptimes);
+          mcu_display_timings(display_back, current_lap_time, laptimes);
+        }
 
         cf_soft = constrain(cf_soft - CF_SOFT_DELTA * TIME_STEP / 1000.0, CF_SOFT_MIN, CF_SOFT_MAX);
         cf_medium = constrain(cf_medium - CF_MEDIUM_DELTA * TIME_STEP / 1000.0, CF_MEDIUM_MIN, CF_MEDIUM_MAX);
