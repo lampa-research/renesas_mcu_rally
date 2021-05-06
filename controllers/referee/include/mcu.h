@@ -17,17 +17,17 @@
 #define DETECTION_LIMIT 970
 #define WAYPOINT_DISTANCE 0.25
 
-#define CF_SOFT_MAX 0.60
+#define CF_SOFT_MAX 0.70
 #define CF_SOFT_MIN 0.15
-#define CF_SOFT_DELTA 0.004 // per second
+#define CF_SOFT_DELTA 0.0035 // per second
 
-#define CF_MEDIUM_MAX 0.50
+#define CF_MEDIUM_MAX 0.60
 #define CF_MEDIUM_MIN 0.25
-#define CF_MEDIUM_DELTA 0.002
+#define CF_MEDIUM_DELTA 0.0035
 
 #define CF_HARD_MAX 0.40
 #define CF_HARD_MIN 0.30
-#define CF_HARD_DELTA 0.001
+#define CF_HARD_DELTA 0.0035
 
 typedef intptr_t ssize_t;
 
