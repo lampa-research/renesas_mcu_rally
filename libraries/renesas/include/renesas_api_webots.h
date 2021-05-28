@@ -22,7 +22,7 @@
 
 // function prototypes
 float compute_torque(float u, float om, float gear);
-double get_gear_ratio();
-int get_number_sensors();
-
+int get_int_field(char *field_name);
+double get_float_field(char *field_name);
+const char *get_string_field(char *field_name);
 #endif

@@ -62,3 +62,20 @@ Returns the roll, pitch, and yaw angles of an inertial measurement unit, attache
 ## double time()
 
 Returns the current time in seconds since the start of the controller program.
+
+## Car parameters
+
+The car parameters are accessible via the following functions.
+
+```c
+double get_track();
+double get_wheel_base();
+double get_sensor_base();
+double get_gear_ratio();
+const char* get_tyre_type();
+double get_tyre_width();
+double get_tyre_radius();
+int get_number_of_sensors();
+double get_distance_between_sensors();
+double get_weight_penalty();
+```

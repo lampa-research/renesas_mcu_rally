@@ -33,17 +33,25 @@ typedef intptr_t ssize_t;
 
 struct board_data_t
 {
-    char team_name[50];
-    char robot_name[50];
-    double laps;
-    double total_time;
-    double best_lap;
+    char team_name[30];
+    char robot_name[30];
+    char car[3][30];
+
+    double laps[3];
+    double times[3];
+    double best_laps[3];
+
+    int points[3];
 };
 
 WbNodeRef mcu_load_robot(char *robot_file);
-void mcu_remove_robot();
+void mcu_remove_robot(WbNodeRef robot_node);
+void mcu_set_weight(WbNodeRef robot_node, double weight);
+WbNodeRef mcu_load_track(char *track_file);
+void mcu_remove_track(WbNodeRef track_node);
 int mcu_competitor_nb();
-void mcu_competitor_list(char list[50][50]);
+void mcu_competitor_list(struct board_data_t *board_data);
+void mcu_track_list(char list[3][50]);
 void mcu_display_init(WbDeviceTag display);
 void mcu_display_clear(WbDeviceTag display);
 void mcu_display_timings(WbDeviceTag display, long current_lap_time, double *laptimes);
@@ -53,8 +61,12 @@ void mcu_camera_mounted();
 void mcu_camera_tracking();
 void mcu_camera_pan_tilt(double waypoint[2]);
 void mcu_leaderboard_display_current(WbNodeRef robot_node, char *data);
-void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names[50][50], char robot_names[50][50], double laps[50], double times[50], double best_laps[50]);
-int compare(const void *a, const void *b);
+void mcu_leaderboard_display_leaderboard(struct board_data_t *sorted, int competitor_current, int current_track);
+int compare_qualy(const void *a, const void *b);
+int compare_reverse(const void *a, const void *b);
+int compare_sprint(const void *a, const void *b);
+int compare_feature(const void *a, const void *b);
+int compare_points(const void *a, const void *b);
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 #endif

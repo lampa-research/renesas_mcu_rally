@@ -15,7 +15,7 @@ The competition will take place in 3 parts: qualifying, sprint race, and feature
 ### Qualifying
 
 - 1 lap
-- track known upfront (information available June 1)
+- track: Suzuka
 - random starting order (no penalties)
 - any car setup / any controller
 - up to 10 points for first 10
@@ -23,7 +23,7 @@ The competition will take place in 3 parts: qualifying, sprint race, and feature
 ### Sprint race
 
 - 3 laps
-- track known upfront (information available June 1)
+- track: Silverstone
 - reverse grid starting order
 - any tyres, but everything else must remain the same / any controller
 - up to 15 points for first 10
@@ -31,7 +31,7 @@ The competition will take place in 3 parts: qualifying, sprint race, and feature
 ### Feature race
 
 - 5 laps
-- track not known upfront
+- track: Nurburgring
 - starting order based on qualifying
 - same setup as qualifying, including tyres / any controller
 - up to 25 points for first 10
@@ -44,4 +44,12 @@ The starting order, determined during the qualifying session, will influence the
 
 ### Design
 
-Each robot must have a distinct shape.
+Each robot must have a distinct shape, combined from added Transforms and Shapes to carShape and carShapeFront fields.
+
+### Point system
+
+Points will be awarded as follows:
+
+- Qualifying: 10, 8, 6, 4, 2, 1
+- Spint race: 15, 12, 10, 8, 6, 4, 2, 1
+- Feature race: 25, 18, 15, 12, 10, 8, 6, 4, 2, 1

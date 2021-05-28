@@ -1,7 +1,7 @@
 #VRML_SIM R2021a utf8
 
 PROTO MCUCar [
-  field SFVec3f translation 0 0.06 0
+  field SFVec3f translation -0.3 0.06 0
   field SFRotation rotation 0 0 1 0
   field SFString teamName "Team name"
   field SFString robotName "Robot name"

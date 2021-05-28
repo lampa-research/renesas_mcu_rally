@@ -23,4 +23,15 @@ double *encoders();
 double *imu();
 double time();
 
+double get_track();
+double get_wheel_base();
+double get_sensor_base();
+double get_gear_ratio();
+const char* get_tyre_type();
+double get_tyre_width();
+double get_tyre_radius();
+int get_number_of_sensors();
+double get_distance_between_sensors();
+double get_weight_penalty();
+
 #endif

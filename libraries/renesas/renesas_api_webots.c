@@ -35,25 +35,40 @@ float compute_torque(float u, float om, float gear)
 }
 
 /**
- * @brief Get the gear ratio of a motor from node definition.
+ * @brief Get the value of a int-type proto field
  * 
- * @return double Gear ratio.
+ * @param field_name 
+ * @return int Field value
  */
-double get_gear_ratio()
+int get_int_field(char *field_name)
 {
   WbNodeRef robot_node = wb_supervisor_node_get_self();
-  WbFieldRef gear_ratio = wb_supervisor_node_get_field(robot_node, "gearRatio");
-  return wb_supervisor_field_get_sf_float(gear_ratio);
+  WbFieldRef field = wb_supervisor_node_get_field(robot_node, field_name);
+  return wb_supervisor_field_get_sf_int32(field);
 }
 
 /**
- * @brief Get the number of sensors from node definition.
+ * @brief Get the value of a float-type proto field
  * 
- * @return int 
+ * @param field_name 
+ * @return double Field value
  */
-int get_number_sensors()
+double get_float_field(char *field_name)
 {
   WbNodeRef robot_node = wb_supervisor_node_get_self();
-  WbFieldRef n_sensors = wb_supervisor_node_get_field(robot_node, "numberOfSensors");
-  return wb_supervisor_field_get_sf_int32(n_sensors);
+  WbFieldRef field = wb_supervisor_node_get_field(robot_node, field_name);
+  return wb_supervisor_field_get_sf_float(field);
+}
+
+/**
+ * @brief Get the value of a string-type proto field
+ * 
+ * @param field_name 
+ * @return double Field value
+ */
+const char *get_string_field(char *field_name)
+{
+  WbNodeRef robot_node = wb_supervisor_node_get_self();
+  WbFieldRef field = wb_supervisor_node_get_field(robot_node, field_name);
+  return wb_supervisor_field_get_sf_string(field);
 }

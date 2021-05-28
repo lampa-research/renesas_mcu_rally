@@ -53,7 +53,7 @@ void init()
   }
 
   // sensor init
-  n_sensors = get_number_sensors();
+  n_sensors = get_number_of_sensors();
   char name[20];
   for (int i = 0; i < n_sensors; i++)
   {
@@ -164,4 +164,103 @@ double *imu()
 double time()
 {
   return current_time;
+}
+
+/**
+ * @brief Get the track
+ * 
+ * @return double Track
+ */
+double get_track()
+{
+  return get_float_field("track");
+}
+
+/**
+ * @brief Get the wheel base
+ * 
+ * @return double Wheel base
+ */
+double get_wheel_base()
+{
+  return get_float_field("wheelBase");
+}
+
+/**
+ * @brief Get the sensor base
+ * 
+ * @return double Sensor base
+ */
+double get_sensor_base()
+{
+  return get_float_field("sensorBase");
+}
+
+/**
+ * @brief Get the gear ratio
+ * 
+ * @return double Gear ratio
+ */
+double get_gear_ratio()
+{
+  return get_float_field("gearRatio");
+}
+
+/**
+ * @brief Get the tyre type
+ * 
+ */
+const char *get_tyre_type()
+{
+  return get_string_field("tyreType");
+}
+
+/**
+ * @brief Get the tyre width
+ * 
+ * @return double Tyre width
+ */
+double get_tyre_width()
+{
+  return get_float_field("tyreWidth");
+}
+
+/**
+ * @brief Get the tyre radius
+ * 
+ * @return double Tyre radius
+ */
+double get_tyre_radius()
+{
+  return get_float_field("tyreRadius");
+}
+
+/**
+ * @brief Get the number of sensors
+ * 
+ * @return int Number of sensors
+ */
+int get_number_of_sensors()
+{
+  return get_int_field("numberOfSensors");
+}
+
+/**
+ * @brief Get the distance between the sensors
+ * 
+ * @return double Distance between the sensors
+ */
+double get_distance_between_sensors()
+{
+  return get_float_field("distanceBetweenSensors");
+}
+
+/**
+ * @brief Get the weight penalty
+ * 
+ * @return double Weight penalty
+ */
+double get_weight_penalty()
+{
+  return get_float_field("weightPenalty");
 }

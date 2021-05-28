@@ -10,17 +10,30 @@ WbNodeRef mcu_load_robot(char *robot_file)
   return wb_supervisor_field_get_mf_node(root_children_field, -1);
 }
 
-void mcu_remove_robot()
+void mcu_remove_robot(WbNodeRef robot_node)
+{
+  wb_supervisor_node_remove(robot_node);
+}
+
+WbNodeRef mcu_load_track(char *track_file)
 {
   WbNodeRef root_node = wb_supervisor_node_get_root();
   WbFieldRef root_children_field = wb_supervisor_node_get_field(root_node, "children");
-  wb_supervisor_field_remove_mf(root_children_field, -1);
+  char str[100] = "saved_nodes/";
+  strcat(str, track_file);
+  wb_supervisor_field_import_mf_node(root_children_field, -1, str);
+  return wb_supervisor_field_get_mf_node(root_children_field, -1);
+}
+
+void mcu_remove_track(WbNodeRef track_node)
+{
+  wb_supervisor_node_remove(track_node);
 }
 
 int mcu_competitor_nb()
 {
   FILE *fp;
-  fp = fopen("competition.txt", "r");
+  fp = fopen("competition_cars.txt", "r");
   int nb = 0;
   int foo = fscanf(fp, "%d", &nb);
   foo++;
@@ -28,22 +41,48 @@ int mcu_competitor_nb()
   return nb;
 }
 
-void mcu_competitor_list(char list[50][50])
+void mcu_competitor_list(struct board_data_t *board_data)
 {
   FILE *fp;
   char *line = NULL;
   size_t len = 0;
   int nb = mcu_competitor_nb();
-  fp = fopen("competition.txt", "r");
-  for (int i = 0; i <= nb; i++)
+  fp = fopen("competition_cars.txt", "r");
+  int foo = getline(&line, &len, fp);
+  foo++;
+  for (int i = 0; i < 3 * nb; i++)
   {
     int foo = getline(&line, &len, fp);
     foo++;
-    if (i > 0)
-    {
-      line[strlen(line) - 1] = 0;
-      strcpy(list[i - 1], line);
-    }
+    line[strlen(line) - 1] = 0;
+    strcpy(board_data[i].car[0], line);
+    foo = getline(&line, &len, fp);
+    line[strlen(line) - 1] = 0;
+    strcpy(board_data[i].car[1], line);
+    foo = getline(&line, &len, fp);
+    line[strlen(line) - 1] = 0;
+    strcpy(board_data[i].car[2], line);
+  }
+  fclose(fp);
+  for (int i = 0; i < nb; i++)
+  {
+    for (int j = 0; j < 3; j++)
+      board_data[i].points[j] = 0;
+  }
+}
+
+void mcu_track_list(char list[3][50])
+{
+  FILE *fp;
+  char *line = NULL;
+  size_t len = 0;
+  fp = fopen("competition_tracks.txt", "r");
+  for (int i = 0; i < 3; i++)
+  {
+    int foo = getline(&line, &len, fp);
+    foo++;
+    line[strlen(line) - 1] = 0;
+    strcpy(list[i], line);
   }
   fclose(fp);
 }
@@ -182,61 +221,176 @@ void mcu_leaderboard_display_current(WbNodeRef robot_node, char *data)
   strcat(display_string, ": ");
   WbFieldRef robot_name_field = wb_supervisor_node_get_field(robot_node, "robotName");
   strcat(display_string, wb_supervisor_field_get_sf_string(robot_name_field));
-  wb_supervisor_set_label(0, display_string, 0, 0, 0.1, 0xe9c46a, 0, "Arial Black");
-  wb_supervisor_set_label(1, data, 0, 0.85, 0.1, 0xe9c46a, 0, "Arial Black");
+  wb_supervisor_set_label(0, display_string, 0.002, 0.002, 0.1, 0x000000, 0, "Arial Black");
+  wb_supervisor_set_label(1, display_string, 0, 0, 0.1, 0xffffff, 0, "Arial Black");
+  wb_supervisor_set_label(2, data, 0.002, 0.852, 0.1, 0x000000, 0, "Arial Black");
+  wb_supervisor_set_label(3, data, 0, 0.85, 0.1, 0xffffff, 0, "Arial Black");
 }
 
-void mcu_leaderboard_display_leaderboard(int competitor_current, char team_names[50][50], char robot_names[50][50], double laps[50], double times[50], double best_laps[50])
+void mcu_leaderboard_display_leaderboard(struct board_data_t *sorted, int competitor_current, int current_track)
 {
-  // generate an array to sort
-  struct board_data_t tosort[competitor_current];
-  for (int i = 0; i < competitor_current; i++)
-  {
-    strcpy(tosort[i].team_name, team_names[i]);
-    strcpy(tosort[i].robot_name, robot_names[i]);
-    tosort[i].laps = laps[i];
-    tosort[i].total_time = times[i];
-    tosort[i].best_lap = best_laps[i];
-  }
-  qsort(tosort, competitor_current, sizeof tosort[0], compare);
-
-  char display_string[1000];
-  sprintf(display_string, "Pos.  Team                             Robot             Laps  Total time  Best lap\n");
+  char display_string[2000];
+  sprintf(display_string, "Pos.  Team             Robot             Laps  Total time  Best lap  Q.  S.  F.  Total\n");
   for (int i = 0; i < competitor_current; i++)
   {
     char temp_string[100];
-    sprintf(temp_string, "%-2d    %-32.32s %-16.16s %5.2f  %10.2f  %8.2f\n", i + 1, tosort[i].team_name, tosort[i].robot_name, tosort[i].laps, tosort[i].total_time, tosort[i].best_lap);
+    sprintf(temp_string, "%-2d    %-16.16s %-16.16s %5.2f  %10.2f  %8.2f  %2d  %2d  %2d     %2d\n", i + 1, sorted[i].team_name, sorted[i].robot_name, sorted[i].laps[current_track], sorted[i].times[current_track], sorted[i].best_laps[current_track], sorted[i].points[0], sorted[i].points[1], sorted[i].points[2], sorted[i].points[0] + sorted[i].points[1] + sorted[i].points[2]);
     strcat(display_string, temp_string);
   }
-  wb_supervisor_set_label(0, "", 0, 0, 0.1, 0xe9c46a, 0, "Arial Black");
-  wb_supervisor_set_label(1, "", 0, 0.85, 0.1, 0xe9c46a, 0, "Arial Black");
-  wb_supervisor_set_label(2, display_string, 0.02, 0.1, 0.06, 0xe9c46a, 0, "Lucida Console");
+  wb_supervisor_set_label(0, "", 0.002, 0.002, 0.1, 0x000000, 0, "Arial Black");
+  wb_supervisor_set_label(1, "", 0, 0, 0.1, 0xffffff, 0, "Arial Black");
+  wb_supervisor_set_label(2, "", 0.002, 0.852, 0.1, 0x000000, 0, "Arial Black");
+  wb_supervisor_set_label(3, "", 0, 0.85, 0.1, 0xffffff, 0, "Arial Black");
+  wb_supervisor_set_label(4, display_string, 0.021, 0.101, 0.06, 0x000000, 0, "Lucida Console");
+  wb_supervisor_set_label(5, display_string, 0.02, 0.1, 0.06, 0xffffff, 0, "Lucida Console");
 }
 
-int compare(const void *a, const void *b)
+int compare_qualy(const void *a, const void *b)
 {
   struct board_data_t *da = (struct board_data_t *)a;
   struct board_data_t *db = (struct board_data_t *)b;
 
-  if (da->laps == db->laps)
+  if (da->laps[0] == db->laps[0])
   {
-    if (da->total_time == db->total_time)
+    if (da->times[0] == db->times[0])
     {
-      if (da->best_lap == db->best_lap)
+      if (da->best_laps[0] == db->best_laps[0])
       {
         return 0;
       }
-      else if (da->best_lap < db->best_lap)
+      else if (da->best_laps[0] < db->best_laps[0])
         return -1;
       else
         return 1;
     }
-    else if (da->total_time < db->total_time)
+    else if (da->times[0] < db->times[0])
       return -1;
     else
       return 1;
   }
-  else if (da->laps < db->laps)
+  else if (da->laps[0] < db->laps[0])
+    return 1;
+  else
+    return -1;
+}
+
+int compare_reverse(const void *a, const void *b)
+{
+  struct board_data_t *da = (struct board_data_t *)a;
+  struct board_data_t *db = (struct board_data_t *)b;
+
+  if (da->laps[0] == db->laps[0])
+  {
+    if (da->times[0] == db->times[0])
+    {
+      if (da->best_laps[0] == db->best_laps[0])
+      {
+        return 0;
+      }
+      else if (da->best_laps[0] < db->best_laps[0])
+        return 1;
+      else
+        return -1;
+    }
+    else if (da->times[0] < db->times[0])
+      return 1;
+    else
+      return -1;
+  }
+  else if (da->laps[0] < db->laps[0])
+    return -1;
+  else
+    return 1;
+}
+
+int compare_sprint(const void *a, const void *b)
+{
+  struct board_data_t *da = (struct board_data_t *)a;
+  struct board_data_t *db = (struct board_data_t *)b;
+
+  if (da->laps[1] == db->laps[1])
+  {
+    if (da->times[1] == db->times[1])
+    {
+      if (da->best_laps[1] == db->best_laps[1])
+      {
+        return 0;
+      }
+      else if (da->best_laps[1] < db->best_laps[1])
+        return -1;
+      else
+        return 1;
+    }
+    else if (da->times[1] < db->times[1])
+      return -1;
+    else
+      return 1;
+  }
+  else if (da->laps[1] < db->laps[1])
+    return 1;
+  else
+    return -1;
+}
+
+int compare_feature(const void *a, const void *b)
+{
+  struct board_data_t *da = (struct board_data_t *)a;
+  struct board_data_t *db = (struct board_data_t *)b;
+
+  if (da->laps[2] == db->laps[2])
+  {
+    if (da->times[2] == db->times[2])
+    {
+      if (da->best_laps[2] == db->best_laps[2])
+      {
+        return 0;
+      }
+      else if (da->best_laps[2] < db->best_laps[2])
+        return -1;
+      else
+        return 1;
+    }
+    else if (da->times[2] < db->times[2])
+      return -1;
+    else
+      return 1;
+  }
+  else if (da->laps[2] < db->laps[2])
+    return 1;
+  else
+    return -1;
+}
+
+int compare_points(const void *a, const void *b)
+{
+  struct board_data_t *da = (struct board_data_t *)a;
+  struct board_data_t *db = (struct board_data_t *)b;
+  if (da->points[0] + da->points[1] + da->points[2] == db->points[0] + db->points[1] + db->points[2])
+  {
+    if (da->points[2] > db->points[2])
+      return 1;
+    else if (da->points[2] < db->points[2])
+      return -1;
+    else
+    {
+      if (da->points[1] > db->points[1])
+        return 1;
+      else if (da->points[1] < db->points[1])
+        return -1;
+      else
+      {
+        if (da->points[0] > db->points[0])
+          return 1;
+        else if (da->points[0] < db->points[0])
+          return -1;
+        else
+        {
+          return 0;
+        }
+      }
+    }
+  }
+  else if (da->points[0] + da->points[1] + da->points[2] > db->points[0] + db->points[1] + db->points[2])
     return 1;
   else
     return -1;

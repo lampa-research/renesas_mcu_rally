@@ -14,13 +14,13 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.15000000596046448
+        0.39794921875
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.25
+        0.29794925451278687
       ]
     }
     ContactProperties {
@@ -32,9 +32,9 @@ WorldInfo {
   ]
 }
 Viewpoint {
-  orientation 0.7497625574084625 0.6034021409888104 0.2715915384514798 5.1680897039475555
-  position -8.482452405164096 10.619736588439006 7.665248374924335
-  followType "Pan and Tilt Shot"
+  orientation 0.6402601081546858 0.717445580249664 0.2744792037404164 5.205973853458138
+  position -2.57942555893917 3.019386820229954 2.282537958398464
+  follow "robot"
   followSmoothness 0.01
 }
 MCUFloor {
@@ -46,10 +46,8 @@ TexturedBackground {
 TexturedBackgroundLight {
 }
 MCUTimingGate {
-  translation 1.9 0 -0.775
-  laps 3
 }
-MCUTrackSuzuka {
+MCUTrackSilverstone {
 }
 DEF MCUCar MCUCar {
 }

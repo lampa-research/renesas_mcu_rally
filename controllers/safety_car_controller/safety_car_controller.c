@@ -1,13 +1,13 @@
 #include "renesas_api.h"
 
-#define UPRAMP 60.0
-#define FAST 30.0
+#define UPRAMP 80.0
+#define FAST 35.0
 #define MEDIUM 20.0
 #define SLOW 10.0
-#define BRAKE -40.0
+#define BRAKE -60.0
 
-#define STRICT 2000.0
-#define LOOSE 20.0
+#define STRICT 1500.0
+#define LOOSE 25.0
 
 enum states_t
 {
@@ -63,15 +63,15 @@ int main(int argc, char **argv)
     switch (state)
     {
     case FOLLOW:
-      motor(FAST, FAST, FAST, FAST);
+      motor(FAST - fabs(100 * line), FAST - fabs(100 * line), FAST - fabs(100 * line), FAST - fabs(100 * line));
       handle(STRICT * line);
-      if (angles[1] > 0.1)
+      if (angles[1] > 0.05)
       {
         last_time = time();
         state = RAMP_UP;
         printf("RAMP UP\n");
       }
-      else if (angles[1] < -0.1)
+      else if (angles[1] < -0.05)
       {
         last_time = time();
         state = RAMP_DOWN;
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
       }
 
       handle(LOOSE * line);
-      if (time() - last_time > 0.2 && (left_change > 3 || right_change > 3))
+      if (time() - last_time > 0.3 && (left_change > 3 || right_change > 3))
       {
         last_time = time();
         state = CORNER_OUT;
@@ -154,9 +154,9 @@ int main(int argc, char **argv)
       break;
     case RIGHT_TURN:
       motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
-      if (time() - last_time < 0.45)
-        handle(-40);
-      else if (time() - last_time < 0.6)
+      if (time() - last_time < 0.7)
+        handle(-20);
+      else if (time() - last_time < 0.9)
         handle(20);
       else if (double_line > 1)
       {
@@ -183,9 +183,9 @@ int main(int argc, char **argv)
       break;
     case LEFT_TURN:
       motor(MEDIUM, MEDIUM, MEDIUM, MEDIUM);
-      if (time() - last_time < 0.45)
-        handle(40);
-      else if (time() - last_time < 0.6)
+      if (time() - last_time < 0.7)
+        handle(20);
+      else if (time() - last_time < 0.9)
         handle(-20);
       else if (double_line > 1)
       {
