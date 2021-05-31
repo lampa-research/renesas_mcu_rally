@@ -30,7 +30,7 @@ PROTO MCURightAngle3D [
               metalness 0
             }
             geometry Plane {
-              size 0.512 0.512
+              size 0.300 0.300
             }
           }
         ]

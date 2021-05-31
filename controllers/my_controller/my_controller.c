@@ -38,9 +38,9 @@ int main(int argc, char **argv)
     unsigned short *sensor = line_sensor();
     double *angles = imu();
     float line = 0, sum = 0, weighted_sum = 0;
-    bool double_line = 0;
-    bool left_change = 0;
-    bool right_change = 0;
+    int double_line = 0;
+    int left_change = 0;
+    int right_change = 0;
     for (int i = 0; i < 8; i++)
     {
       weighted_sum += sensor[i] * i;

@@ -1,0 +1,32 @@
+#VRML_SIM R2021a utf8
+
+PROTO MCUMidline3D [
+  field SFVec3f translation 0 0.032 0
+  field SFRotation rotation 0 0 1 0
+  field SFFloat length 0.12
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.0001
+    rotationStep 0.001
+    children [
+      Shape {
+        appearance PBRAppearance {
+          baseColorMap ImageTexture {
+            url [
+              "textures/midline.png"
+            ]
+          }
+          transparency 0.001
+          roughness 1
+          metalness 0
+        }
+        geometry Plane {
+          size %{=fields.length.value}% 0.04
+        }
+      }
+    ]
+  }
+}

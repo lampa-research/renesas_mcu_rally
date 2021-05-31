@@ -134,7 +134,7 @@ PROTO MCUCurve6003D [
           }
           Solid {
             translation 0.333538 0 -0.246627
-            rotation 0 1 0 -5.307179586466759e-06
+            rotation 0 1 0 0
             children [
               Shape {
                 appearance PBRAppearance {
@@ -154,6 +154,11 @@ PROTO MCUCurve6003D [
             boundingObject USE C4
           }
         ]
+      }
+      MCUMidline3D {
+        translation -0.0707024 0.032 0.165754
+        rotation 0 -1 0 -0.774815307179586
+        length 0.16
       }
     ]
   }

@@ -16,7 +16,7 @@ PROTO MCUCurve4503D [
     translationStep 0.001
     children [
       Transform {
-        translation 0 0.031 0
+        translation 0.256 0.031 0
         children [
           Shape {
             appearance PBRAppearance {
@@ -30,7 +30,7 @@ PROTO MCUCurve4503D [
               metalness 0
             }
             geometry Plane {
-              size 1.024 0.512
+              size 0.512 0.512
             }
           }
         ]
@@ -134,7 +134,7 @@ PROTO MCUCurve4503D [
           }
           Solid {
             translation 0.333538 0 -0.246627
-            rotation 0 1 0 -5.307179586466759e-06
+            rotation 0 1 0 0
             children [
               Shape {
                 appearance PBRAppearance {
@@ -154,6 +154,10 @@ PROTO MCUCurve4503D [
             boundingObject USE C4
           }
         ]
+      }
+      MCUMidline3D {
+        translation 0.0489393 0.032 0.108599
+        rotation 0 1 0 0.784
       }
     ]
   }

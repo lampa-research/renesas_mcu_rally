@@ -17,7 +17,7 @@ PROTO MCUStraight3D [
     translationStep 0.001
     children [
       Transform {
-        translation 0 0.031 0
+        translation 0 0.0311 0
         children [
           Shape {
             appearance PBRAppearance {
