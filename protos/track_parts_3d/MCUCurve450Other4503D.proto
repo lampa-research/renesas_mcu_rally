@@ -1,6 +1,6 @@
 #VRML_SIM R2021a utf8
 
-PROTO MCUCurve4503D [
+PROTO MCUCurve450Other4503D [
   field SFVec3f translation 0 0 0
   field SFRotation rotation 0 0 1 0
 ]
@@ -16,13 +16,13 @@ PROTO MCUCurve4503D [
     translationStep 0.001
     children [
       Transform {
-        translation 0 0.031 0
+        translation 0.256 0.031 0
         children [
           Shape {
             appearance PBRAppearance {
               baseColorMap ImageTexture {
                 url [
-                  "textures/c450.png"
+                  "textures/c450other450.png"
                 ]
               }
               transparency 0.001
@@ -30,7 +30,7 @@ PROTO MCUCurve4503D [
               metalness 0
             }
             geometry Plane {
-              size 1.024 0.512
+              size 0.512 0.512
             }
           }
         ]

@@ -9,11 +9,11 @@ PROTO MCUTrackSilverstone [
         translation -0.276 0 0
         length 5.56
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation 2.59038 0 -0.067175
         rotation 0 1 0 -0.785395307179586
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation 3.13966 0 0.237103
         rotation 0 1 0 -1.5707953071795862
       }
@@ -22,7 +22,7 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 -1.5707953071795862
         length 5
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation 3.35166 0 6.2561
         rotation 0 1 0 1.5708
       }
@@ -31,7 +31,7 @@ PROTO MCUTrackSilverstone [
         rotation 0 -1 0 0.785397
         length 0.25
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation 3.75366 0 6.4671
         rotation 0 1 0 -1.5707953071795862
       }
@@ -40,15 +40,15 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 -1.5707953071795862
         length 0.4
       }
-      MCUCurve6003D {
+      MCUCurve600Other6003D {
         translation 3.96566 0 7.8861
         rotation 0 1 0 1.5708
       }
-      MCUCurve6003D {
+      MCUCurve600Other6003D {
         translation 4.19166 0 7.9211
         rotation 0 1 0 -1.5707953071795862
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation 4.36494 0 8.52384
         rotation 0 1 0 -2.3561953071795863
       }
@@ -57,11 +57,11 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 -2.3561953071795863
         length 9
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation -2.29936 0 15.4345
         rotation 0 1 0 3.14159
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation -2.90281 0 15.6082
         rotation 0 -1 0 -2.3561953071795863
       }
@@ -123,11 +123,11 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 -0.7854053071795866
         length 0.1
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation -7.73899 0 12.6711
         rotation 0 -1 0 -1.5707953071795862
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation -7.91261 0 12.0664
         rotation 0 -1 0 -0.785395307179586
       }
@@ -189,7 +189,7 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 -2.3561953071795863
         length 0.15
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation -3.14854 0 7.05655
         rotation 0 1 0 0
       }
@@ -198,7 +198,7 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 3.14158
         length 1
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation -1.13154 0 6.84455
         rotation 0 1 0 3.14159
       }
@@ -261,11 +261,11 @@ PROTO MCUTrackSilverstone [
         rotation 0 -1 0 -0.7853853071795864
         length 0.1
       }
-      MCUCurve4503D {
+      MCUCurve450Same4503D {
         translation 1.56762 0 5.72999
         rotation 0 1 0 -2.3561953071795863
       }
-      MCUCurve4503D {
+      MCUCurve450Straight3D {
         translation 1.35044 0 5.23217
         rotation 0 -1 0 1.5708
       }
@@ -274,27 +274,27 @@ PROTO MCUTrackSilverstone [
         rotation 0 1 0 2.35618
         length 5
       }
-      MCUCurve4503D {
+      MCUCurve450Same4503D {
         translation -2.68687 0 1.50032
         rotation 0 -1 0 0.785402
       }
-      MCUCurve4503D {
+      MCUCurve450Other4503D {
         translation -3.18496 0 1.71741
         rotation 0 -1 0 0
       }
-      MCUCurve4503D {
+      MCUCurve450Other4503D {
         translation -3.00796 0 1.85541
         rotation 0 1 0 3.14159
       }
-      MCUCurve6003D {
+      MCUCurve600Same4503D {
         translation -3.61141 0 2.02869
         rotation 0 -1 0 -2.3561953071795863
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation -4.16069 0 1.72503
         rotation 0 -1 0 -1.5707953071795862
       }
-      MCUCurve6003D {
+      MCUCurve600Same6003D {
         translation -4.33399 0 1.12205
         rotation 0 -1 0 -0.785395307179586
       }
@@ -303,7 +303,7 @@ PROTO MCUTrackSilverstone [
         rotation 0 -1 0 -0.7853853071795864
         length 0.66
       }
-      MCUCurve6003D {
+      MCUCurve600Straight3D {
         translation -3.56414 0 0.106229
         rotation 0 1 0 0
       }

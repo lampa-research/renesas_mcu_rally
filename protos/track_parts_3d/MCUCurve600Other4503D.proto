@@ -1,6 +1,6 @@
 #VRML_SIM R2021a utf8
 
-PROTO MCUCurve6003D [
+PROTO MCUCurve600Other4503D [
   field SFVec3f translation 0 0 0
   field SFRotation rotation 0 0 1 0
 ]
@@ -22,7 +22,7 @@ PROTO MCUCurve6003D [
             appearance PBRAppearance {
               baseColorMap ImageTexture {
                 url [
-                  "textures/c600.png"
+                  "textures/c600other450.png"
                 ]
               }
               transparency 0.001
