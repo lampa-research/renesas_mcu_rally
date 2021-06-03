@@ -27,6 +27,11 @@ PROTO MCUTrackNurburgring [
         length 0.5
       }
       MCUStraight3D {
+        translation 5.56221 0 3.25337
+        rotation 0 1 0 2.3562
+        length 0.2
+      }
+      MCUStraight3D {
         translation 5.83387 0 3.52504
         rotation 0 1 0 2.3562
         length 0.1
@@ -97,6 +102,11 @@ PROTO MCUTrackNurburgring [
         rotation 0 1 0 -3.1415853071795863
         length 1
       }
+      MCUStraight3D {
+        translation 6.10829 0 5.18869
+        rotation 0 1 0 -3.1415853071795863
+        length 0.3
+      }
       MCURightLaneChange3D {
         translation 5.658 0 5.039
         rotation 0 1 0 3.14159
@@ -115,6 +125,11 @@ PROTO MCUTrackNurburgring [
         translation 3.15029 0 4.88869
         rotation 0 1 0 -3.1415853071795863
         length 4
+      }
+      MCUStraight3D {
+        translation 5.15729 0 4.88869
+        rotation 0 1 0 -3.1415853071795863
+        length 0.4
       }
       MCULeftLaneChange3D {
         translation 0.64 0 5.039
@@ -339,6 +354,10 @@ PROTO MCUTrackNurburgring [
       MCUStripe3D {
         translation -2.15 0.033 0.733
         rotation 0 1 0 -1.5707953071795862
+      }
+      MCUStraight3D {
+        translation -1.777 0 0
+        length 0.5
       }
     ]
   }
