@@ -120,10 +120,10 @@ void handle(int angle)
  */
 void motor(int back_right, int back_left, int front_right, int front_left)
 {
-  wb_motor_set_torque(motor_handle[0], compute_torque((float)back_right * 3.7 / 100, velocity[0], gear_ratio));
-  wb_motor_set_torque(motor_handle[1], compute_torque((float)back_left * 3.7 / 100, velocity[1], gear_ratio));
-  wb_motor_set_torque(motor_handle[2], compute_torque((float)front_right * 3.7 / 100, velocity[2], gear_ratio));
-  wb_motor_set_torque(motor_handle[3], compute_torque((float)front_left * 3.7 / 100, velocity[3], gear_ratio));
+  wb_motor_set_torque(motor_handle[0], compute_torque((float)constrain(back_right, -100, 100) * 3.7 / 100, velocity[0], gear_ratio));
+  wb_motor_set_torque(motor_handle[1], compute_torque((float)constrain(back_left, -100, 100) * 3.7 / 100, velocity[1], gear_ratio));
+  wb_motor_set_torque(motor_handle[2], compute_torque((float)constrain(front_right, -100, 100) * 3.7 / 100, velocity[2], gear_ratio));
+  wb_motor_set_torque(motor_handle[3], compute_torque((float)constrain(front_left, -100, 100) * 3.7 / 100, velocity[3], gear_ratio));
 }
 
 /**
