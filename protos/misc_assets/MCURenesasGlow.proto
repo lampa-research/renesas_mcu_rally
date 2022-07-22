@@ -1,0 +1,40 @@
+#VRML_SIM R2022a utf8
+# tags: nonDeterministic
+
+PROTO MCURenesasGlow [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+  field SFVec3f scale 1 1 1
+  field SFColor emmissiveColor 0 0 0
+  field SFFloat emissiveIntensity 1
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    scale IS scale
+    children [
+      Transform {
+        rotation 1 0 0 -1.5707996938995747
+        children [
+          Shape {
+            appearance PBRAppearance {
+              baseColorMap ImageTexture {
+                url [
+                  "textures/renesas_logomark_white.png"
+                ]
+              }
+              roughness 1
+              metalness 0
+              emissiveColor IS emmissiveColor
+              emissiveIntensity IS emissiveIntensity
+            }
+            geometry Plane {
+              size 1 0.333
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

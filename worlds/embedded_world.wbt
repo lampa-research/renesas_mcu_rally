@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 WorldInfo {
   basicTimeStep 5
   coordinateSystem "NUE"
@@ -14,28 +14,27 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.4155481457710266
+        0.6727699999999943
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.3155481815338135
+        0.5727699999999943
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.30000001192092896
+        0.3727699999999944
       ]
     }
   ]
 }
 Viewpoint {
-  orientation -0.5786027891845062 -0.7617642103164023 -0.29143455565347465 1.1684319367103388
-  position -2.6048868996366523 3.3454045097130214 2.4303479830439128
+  orientation -0.8260100810349539 0.5627266677941922 0.032342593926185915 2.090882151184157
+  position -2.9568742435730986 3.43891160154635 2.811165182649755
   follow "robot"
-  followType "Mounted Shot"
   followSmoothness 0.01
 }
 MCUFloor {
@@ -48,7 +47,7 @@ TexturedBackgroundLight {
 }
 MCUTimingGate {
 }
-DEF MCUCar MCUCar {
+MCUTrackSuzuka {
 }
-MCUTrackNurburgring {
+DEF MCUCar MCUCar {
 }

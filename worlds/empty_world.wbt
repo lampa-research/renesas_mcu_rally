@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 WorldInfo {
   basicTimeStep 5
   coordinateSystem "NUE"
@@ -14,19 +14,19 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.9975495934486389
+        1
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.898530900478363
+        0.9
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.8495093584060669
+        0.85
       ]
     }
   ]

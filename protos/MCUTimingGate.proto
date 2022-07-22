@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 
 PROTO MCUTimingGate [
   field SFVec3f translation 0.3 0 0
@@ -181,7 +181,7 @@ PROTO MCUTimingGate [
     name "timing_gate"
     boundingObject USE GATE
     supervisor TRUE
-    controller "referee"
+    controller "race"
   }
 
 }

@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 
 PROTO MCUTyre [
   field SFString name "tyre"
@@ -22,12 +22,10 @@ PROTO MCUTyre [
     type "tyre-"
     endPoint Solid {
       translation 0 0 0
-      rotation 1 0 0 1.5708
-
       children [
         DEF WHEEL_SHAPE Shape {
           appearance PBRAppearance {
-            baseColor 0 0 0
+            baseColor 0.2 0.2 0.2
             roughness 1
           }
           geometry Cylinder {

@@ -1,12 +1,8 @@
 # Guide for participants
 
-## Registration
-
-Register your participation via [this form](https://forms.gle/ZD8RdVTf5412wWbU8).
-
 ## File submission
 
-Send the following files to the competition organiser via email: rok(dot)vrabic(at)fs(dot)uni-lj(dot)si
+Send the following files to the competition organiser (email will be provided to the registered competitors):
 
 - The robot definition file (.wbo).
 - The controller source (single .c file).

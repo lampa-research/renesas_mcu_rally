@@ -1,0 +1,193 @@
+#VRML_OBJ R2022a utf8
+DEF MCUCar MCUCar {
+  teamName "Renesas"
+  robotName "Safety car"
+  country "EU"
+  tyreType "hard"
+  backColor 0.14902 0.635294 0.411765
+  frontColor 0.14902 0.635294 0.411765
+  sensorColor 0.14902 0.635294 0.411765
+  carShape [
+    Transform {
+      translation -0.01 0.04 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.239216 0.219608 0.27451
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.1 0.04 0.07
+          }
+        }
+      ]
+    }
+    MCURenesasGlow {
+      translation -0.061 0.04 0
+      rotation 0.5773509358560258 -0.577349935856137 0.577349935856137 2.09439
+      scale 0.08 0.04 1
+      emmissiveColor 1 1 1
+    }
+    MCURenesasGlow {
+      translation -0.01 0.04 0.036
+      rotation -0.9999999999943643 -8.732169999950788e-07 3.2417399999817304e-06 -1.5707953071795862
+      scale 0.08 0.04 1
+      emmissiveColor 1 1 1
+    }
+    MCURenesasGlow {
+      translation -0.00999996 0.04 -0.036
+      rotation 0 0.7071072811865696 -0.7071062811861719 3.14159
+      scale 0.08 0.04 1
+      emmissiveColor 1 1 1
+    }
+    Transform {
+      translation -0.01 0.08 -0.03
+      rotation 0 1 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.878431 0.105882 0.141176
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.03
+            radius 0.01
+          }
+        }
+        PointLight {
+          attenuation 0 0 1
+          color 0.878431 0.105882 0.141176
+          intensity 0.1
+        }
+      ]
+    }
+    Transform {
+      translation -0.01 0.08 0.03
+      rotation 0 1 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.2 0.819608 0.478431
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.03
+            radius 0.01
+          }
+        }
+        PointLight {
+          attenuation 0 0 1
+          color 0.2 0.819608 0.478431
+          intensity 0.1
+        }
+      ]
+    }
+    Transform {
+      translation -0.01 0.08 6.74634e-14
+      rotation 0 1 0 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.03
+            radius 0.01
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.01 0.07 -7.34639e-08
+      rotation 1 0 0 -1.5707953071795862
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            height 0.02
+            radius 0.01
+          }
+        }
+      ]
+    }
+  ]
+  carShapeFront [
+    Transform {
+      translation 0.002 0.03 0
+      rotation 0 0 1 -0.523595307179586
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.239216 0.219608 0.27451
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.057 0.01 0.071
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0.015 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.14902 0.635294 0.411765
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.05 0.01 0.07
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.008 0.025 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.14902 0.635294 0.411765
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.034 0.01 0.07
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.016 0.035 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.14902 0.635294 0.411765
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.018 0.01 0.07
+          }
+        }
+      ]
+    }
+    MCURenesasGlow {
+      translation 0.004 0.035 0.001
+      rotation 0.25056200542354 0.9351130202409892 -0.25056400542358326 1.6378353071795866
+      scale 0.08 0.04 1
+      emmissiveColor 1 1 1
+    }
+  ]
+  controller "safety_car_controller"
+}

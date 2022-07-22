@@ -1,0 +1,37 @@
+#VRML_SIM R2022a utf8
+# tags: nonDeterministic
+
+PROTO MCUStripe [
+  field SFVec3f translation 0 0.033 0
+  field SFRotation rotation 1 0 0 0
+  field SFFloat length 0.3
+]
+{
+  Transform {
+    translation IS translation
+    rotation IS rotation
+    translationStep 0.01
+    rotationStep 1.5708
+    children [
+      Transform {
+        rotation 1 0 0 -1.5707996938995747
+        children [
+          Shape {
+            appearance Appearance {
+              material Material {
+              }
+              texture ImageTexture {
+                url [
+                  "textures/stripe.png"
+                ]
+              }
+            }
+            geometry Plane {
+              size 0.02 %{=fields.length.value}%
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

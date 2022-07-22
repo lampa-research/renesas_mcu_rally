@@ -1,0 +1,8 @@
+#VRML_OBJ R2022a utf8
+MCUCar {
+  teamName "Test"
+  robotName "3"
+  country "SI"
+  tyreType "hard"
+  controller "my_controller"
+}

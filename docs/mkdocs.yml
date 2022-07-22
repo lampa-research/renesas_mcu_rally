@@ -1,6 +1,7 @@
 site_name: Renesas Virtual MCU Rally
 
-theme: readthedocs
+theme:
+  name: material
 
 nav:
   - Home: index.md
@@ -16,8 +17,21 @@ nav:
     - State machine programming: state_machine_programming.md
   - Manuals:
     - Tuning the MCU car: tuning_the_mcucar.md
-    - Building 2D tracks: building_2d_tracks.md
-    - Building 3D tracks: building_3d_tracks.md
+    - Building tracks: building_tracks.md
   - Competition:
     - Regulations: regulations.md
     - Guide for participants: guide_for_participants.md
+
+plugins:
+  - search 
+  - with-pdf:
+      author: Renesas Europe
+      cover_title: Renesas Virtual MCU Rally
+      cover_subtitle: Documentation and rules (draft aug. 2021)
+      copyright: Subject to updates
+      render_js: true
+      headless_chrome_path: chromium-browser
+      two_columns_level: 3
+      ordered_chapter_level: 0
+      output_path: ../../instructions.pdf
+      show_anchors: true

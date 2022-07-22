@@ -1,4 +1,4 @@
-#VRML_SIM R2021a utf8
+#VRML_SIM R2022a utf8
 
 PROTO MCUFloor [
   field SFColor color 0.203922 0.396078 0.643137
@@ -6,6 +6,7 @@ PROTO MCUFloor [
 ]
 {
   Solid {
+    rotation 1 0 0 -1.5707996938995747
     children [
       DEF FLOOR Shape {
         appearance MattePaint {

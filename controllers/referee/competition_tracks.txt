@@ -1,3 +1,0 @@
-MCUTrackSuzuka.wbo
-MCUTrackSilverstone.wbo
-MCUTrackNurburgring.wbo
