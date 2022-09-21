@@ -1,5 +1,4 @@
-#VRML_SIM R2022a utf8
-
+#VRML_SIM R2022b utf8
 PROTO MCUSensor [
   field SFColor color 0.12549 0.290196 0.529412
   field SFInt32 numberOfSensors 4

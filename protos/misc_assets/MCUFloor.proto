@@ -1,4 +1,6 @@
-#VRML_SIM R2022a utf8
+#VRML_SIM R2022b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/appearances/protos/MattePaint.proto"
 
 PROTO MCUFloor [
   field SFColor color 0.203922 0.396078 0.643137

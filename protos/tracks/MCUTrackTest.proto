@@ -1,5 +1,18 @@
-#VRML_SIM R2022a utf8
+#VRML_SIM R2022b utf8
 # tags: nonDeterministic
+
+EXTERNPROTO "../track_parts/MCUCornerWiggle.proto"
+EXTERNPROTO "../track_parts/MCUCorner500.proto"
+EXTERNPROTO "../track_parts/MCULeftLaneChange.proto"
+EXTERNPROTO "../track_parts/MCUStraight.proto"
+EXTERNPROTO "../track_parts/MCUStraightWiggle.proto"
+EXTERNPROTO "../track_parts/MCUCorner400.proto"
+EXTERNPROTO "../track_parts/MCURightOffset.proto"
+EXTERNPROTO "../track_parts/MCUCorner90.proto"
+EXTERNPROTO "../track_parts/MCUCorner300.proto"
+EXTERNPROTO "../track_parts/MCUCorner200.proto"
+EXTERNPROTO "../track_parts/MCUStripe.proto"
+EXTERNPROTO "../track_parts/MCUStraightOffset.proto"
 
 PROTO MCUTrackTest [
 ]

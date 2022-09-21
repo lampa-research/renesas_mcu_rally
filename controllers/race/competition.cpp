@@ -219,7 +219,7 @@ Node *Competition::loadTrack() {
   Node *root = supervisor->getRoot();
   Field *root_children = root->getField("children");
   // cout << "Loading track " << tracks[current_track] << endl;
-  root_children->importMFNode(-1, string("saved_nodes/") + tracks[current_track]);
+  root_children->importMFNodeFromString(-1, string("saved_nodes/") + tracks[current_track]);
   // cout << "Loaded track " << tracks[current_track] << endl;
   return root_children->getMFNode(-1);
 }
@@ -237,7 +237,7 @@ int Competition::getLapsTotal() { return laps_total; }
 Node *Competition::loadRobot(string name) {
   Node *root = supervisor->getRoot();
   Field *root_children = root->getField("children");
-  root_children->importMFNode(-1, string("saved_nodes/") + name);
+  root_children->importMFNodeFromString(-1, string("saved_nodes/") + name);
   return root_children->getMFNode(-1);
 }
 

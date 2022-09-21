@@ -1,5 +1,4 @@
-#VRML_SIM R2022a utf8
-
+#VRML_SIM R2022b utf8
 PROTO MCUMotor [
   field SFString name "motor"
   field SFFloat gearRatio 10.0

@@ -1,5 +1,4 @@
-#VRML_SIM R2022a utf8
-
+#VRML_SIM R2022b utf8
 PROTO MCUTyre [
   field SFString name "tyre"
   field SFString{"soft", "medium", "hard"} material "medium"
