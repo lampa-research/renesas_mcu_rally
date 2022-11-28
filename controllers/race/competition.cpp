@@ -216,11 +216,20 @@ bool Competition::stateIsInit() {
 }
 
 Node *Competition::loadTrack() {
+  cout << "Loading track: " << tracks[current_track] << endl;
   Node *root = supervisor->getRoot();
   Field *root_children = root->getField("children");
-  // cout << "Loading track " << tracks[current_track] << endl;
-  root_children->importMFNodeFromString(-1, string("saved_nodes/") + tracks[current_track]);
-  // cout << "Loaded track " << tracks[current_track] << endl;
+  // read file
+  string file_name = "saved_nodes/" + tracks[current_track];
+  ifstream file(file_name);
+  string track_string;
+  // read the entire file
+  file.seekg(0, ios::end);
+  track_string.reserve(file.tellg());
+  file.seekg(0, ios::beg);
+  track_string.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+  root_children->importMFNodeFromString(-1, track_string);
+  // root_children->importMFNodeFromString(-1, string("saved_nodes/") + tracks[current_track]);
   return root_children->getMFNode(-1);
 }
 
@@ -237,7 +246,17 @@ int Competition::getLapsTotal() { return laps_total; }
 Node *Competition::loadRobot(string name) {
   Node *root = supervisor->getRoot();
   Field *root_children = root->getField("children");
-  root_children->importMFNodeFromString(-1, string("saved_nodes/") + name);
+  // read file
+  string file_name = string("saved_nodes/") + name;
+  ifstream file(file_name);
+  string robot_string;
+  // read the entire file
+  file.seekg(0, ios::end);
+  robot_string.reserve(file.tellg());
+  file.seekg(0, ios::beg);
+  robot_string.assign((istreambuf_iterator<char>(file)), istreambuf_iterator<char>());
+  root_children->importMFNodeFromString(-1, robot_string);
+  // root_children->importMFNodeFromString(-1, string("saved_nodes/") + name);
   return root_children->getMFNode(-1);
 }
 

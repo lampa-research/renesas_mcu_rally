@@ -1,13 +1,18 @@
 #VRML_SIM R2022b utf8
 
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/vehicles/protos/abstract/Car.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
-EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/Floor.proto"
-EXTERNPROTO "../protos/tracks/MCUTrackSuzuka.proto"
 EXTERNPROTO "../protos/misc_assets/MCUFloor.proto"
-EXTERNPROTO "../protos/MCUCar.proto"
 EXTERNPROTO "../protos/MCUTimingGate.proto"
+IMPORTABLE EXTERNPROTO "../protos/MCUCar.proto"
+IMPORTABLE EXTERNPROTO "../protos/tracks/MCUTrackMonaco.proto"
+IMPORTABLE EXTERNPROTO "../protos/tracks/MCUTrackSpa.proto"
+IMPORTABLE EXTERNPROTO "../protos/tracks/MCUTrackSuzuka.proto"
+IMPORTABLE EXTERNPROTO "../protos/misc_assets/MCUMotor.proto"
+IMPORTABLE EXTERNPROTO "../protos/misc_assets/MCUSensor.proto"
+IMPORTABLE EXTERNPROTO "../protos/misc_assets/MCUTyre.proto"
+IMPORTABLE EXTERNPROTO "../protos/misc_assets/MCURenesasGlow.proto"
+IMPORTABLE EXTERNPROTO "../protos/misc_assets/MCURenesasBoard.proto"
 
 WorldInfo {
   basicTimeStep 5
@@ -24,27 +29,28 @@ WorldInfo {
     ContactProperties {
       material2 "soft"
       coulombFriction [
-        0.6727699999999943
+        0.6351799999999865
       ]
     }
     ContactProperties {
       material2 "medium"
       coulombFriction [
-        0.5727699999999943
+        0.5351799999999866
       ]
     }
     ContactProperties {
       material2 "hard"
       coulombFriction [
-        0.3727699999999944
+        0.3351799999999866
       ]
     }
   ]
 }
 Viewpoint {
-  orientation -0.8260100810349539 0.5627266677941922 0.032342593926185915 2.090882151184157
-  position -2.9568742435730986 3.43891160154635 2.811165182649755
+  orientation -0.8660363382461929 0.49926557310175623 -0.026738518143316084 1.9418197339422922
+  position -1.6474159124507268 1.408266620527542 0.8608651156864334
   follow "robot"
+  followType "Mounted Shot"
   followSmoothness 0.01
 }
 MCUFloor {
@@ -57,7 +63,7 @@ TexturedBackgroundLight {
 }
 MCUTimingGate {
 }
-MCUTrackSuzuka {
+MCUTrackSpa {
 }
 DEF MCUCar MCUCar {
 }
