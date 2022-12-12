@@ -1,8 +1,19 @@
-#VRML_OBJ R2022a utf8
+#VRML_OBJ R2022b utf8
 MCUCar {
-  teamName "Test"
-  robotName "1"
-  country "DE"
-  tyreType "soft"
+  teamName "232XXXXX"
+  robotName "Procesor"
+  country "SI"
+  track 0.12
+  wheelBase 0.15
+  sensorBase 0.1
+  gearRatio 10
+  tyreType "medium"
+  tyreWidth 0.02
+  tyreRadius 0.02
+  numberOfSensors 8
+  distanceBetweenSensors 0.015
+  backColor 1 1 0.5
+  frontColor 1 0.5 1
+  sensorColor 0.5 1 1
   controller "my_controller"
 }
